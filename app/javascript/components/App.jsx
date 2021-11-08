@@ -7,19 +7,24 @@ import WorkspacesIndex from "./workspaces/Index";
 import HomeIndex from "./home/Index";
 import NotFound from "./pages/NotFound";
 import Footer from "./layout/Footer";
+import BoardsIndex from "./boards/Index";
+import BoardsShow from "./boards/Show";
 
 const App = (props) => {
     return (
         <BrowserRouter>
             <div className="site">
                 <Header isLoggedIn={!!props.user} />
-                <Container sx={{paddingTop: '20px', paddingBottom: '20px', flexGrow: '1'}}>
-                    <Routes>
-                        <Route path="/" element={<HomeIndex />} />
-                        <Route path="workspaces" element={<WorkspacesIndex />} />
-                        <Route path={"*"} element={<NotFound />} />
-                    </Routes>
-                </Container>
+                <BoardsShow />
+                {/*<Container sx={{paddingTop: '20px', paddingBottom: '20px', flexGrow: '1'}}>*/}
+                {/*    <Routes>*/}
+                {/*        <Route path="/" element={<HomeIndex />} />*/}
+                {/*        <Route path="workspaces" element={<WorkspacesIndex />} />*/}
+                {/*        <Route path="boards" element={<BoardsIndex />} />*/}
+                {/*        <Route path="boards/:id" element={<BoardsShow />} />*/}
+                {/*        <Route path={"*"} element={<NotFound />} />*/}
+                {/*    </Routes>*/}
+                {/*</Container>*/}
                 <Footer />
             </div>
         </BrowserRouter>

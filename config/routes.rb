@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :workspaces
+    resources :boards
   end
 
   get '*path', to: 'home#index'

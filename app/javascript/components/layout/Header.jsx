@@ -1,14 +1,23 @@
 import React from "react"
 import PropTypes from "prop-types"
-import {AppBar, Box, Button, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Button, Menu, MenuItem, Toolbar, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 
 const Header = (props) => {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     return (
         <AppBar position="static">
             <Toolbar variant="dense">
                 <Box sx={{flexGrow: 1}}>
-                    <Typography variant="h6" color="white" component="div">
+                    <Typography variant="body1" color="white" component="div">
                         <Link className={'header-link'} to={'/'}>Home</Link>
                         <Link className={'header-link'} to={'/workspaces'}>Workspaces</Link>
                     </Typography>
