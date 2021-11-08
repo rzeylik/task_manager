@@ -13,6 +13,8 @@ gem 'jbuilder', '~> 2.7'
 
 gem 'devise'
 gem 'react-rails'
+gem 'ancestry'
+gem 'rails_admin'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 

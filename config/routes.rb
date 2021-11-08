@@ -1,5 +1,12 @@
 Rails.application.routes.draw do
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  devise_for :users
+
   root 'home#index'
 
-  devise_for :users
+  namespace :api do
+    resources :workspaces
+  end
+
+  get '*path', to: 'home#index'
 end

@@ -1,5 +1,7 @@
 class HomeController < ApplicationController
+  before_action :authenticate_user!
+
   def index
-    @array = [1, 2, 3, 4]
+    render layout: 'react'
   end
 end

@@ -1,5 +1,16 @@
 @import "~bootstrap/scss/bootstrap";
 
 body {
-  background-color: grey;
+  background-color: white;
+}
+
+.header-link {
+  color: white;
+  text-underline: none;
+}
+
+.site {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
