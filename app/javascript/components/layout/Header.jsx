@@ -4,14 +4,14 @@ import {AppBar, Box, Button, Menu, MenuItem, Toolbar, Typography} from "@mui/mat
 import {Link} from "react-router-dom";
 
 const Header = (props) => {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    // const [anchorEl, setAnchorEl] = React.useState(null);
+    // const open = Boolean(anchorEl);
+    // const handleClick = (event) => {
+    //     setAnchorEl(event.currentTarget);
+    // };
+    // const handleClose = () => {
+    //     setAnchorEl(null);
+    // };
 
     return (
         <AppBar position="static">
@@ -20,6 +20,7 @@ const Header = (props) => {
                     <Typography variant="body1" color="white" component="div">
                         <Link className={'header-link'} to={'/'}>Home</Link>
                         <Link className={'header-link'} to={'/workspaces'}>Workspaces</Link>
+                        <Link className={'header-link'} to={'/boards'}>Boards</Link>
                     </Typography>
                 </Box>
                 <Box>

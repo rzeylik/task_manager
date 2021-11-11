@@ -15,16 +15,13 @@ const App = (props) => {
         <BrowserRouter>
             <div className="site">
                 <Header isLoggedIn={!!props.user} />
-                <BoardsShow />
-                {/*<Container sx={{paddingTop: '20px', paddingBottom: '20px', flexGrow: '1'}}>*/}
-                {/*    <Routes>*/}
-                {/*        <Route path="/" element={<HomeIndex />} />*/}
-                {/*        <Route path="workspaces" element={<WorkspacesIndex />} />*/}
-                {/*        <Route path="boards" element={<BoardsIndex />} />*/}
-                {/*        <Route path="boards/:id" element={<BoardsShow />} />*/}
-                {/*        <Route path={"*"} element={<NotFound />} />*/}
-                {/*    </Routes>*/}
-                {/*</Container>*/}
+                    <Routes>
+                        <Route path="/" element={<HomeIndex />} />
+                        <Route path="workspaces" element={<WorkspacesIndex />} />
+                        <Route path="boards" element={<BoardsIndex />} />
+                        <Route path="boards/:id" element={<BoardsShow />} />
+                        <Route path={"*"} element={<NotFound />} />
+                    </Routes>
                 <Footer />
             </div>
         </BrowserRouter>

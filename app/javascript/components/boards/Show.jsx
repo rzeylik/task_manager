@@ -2,26 +2,17 @@ import React, {useEffect, useState} from "react"
 import PropTypes from "prop-types"
 import Board from 'react-trello'
 import {useParams} from "react-router-dom";
+import {csrfToken} from "../../js/helper";
+import {handleCardDragEnd, handleLaneDragEnd, onCardAdd, onDataChange, onLaneAdd} from "./board_actions";
 
 const BoardsShow = (props) => {
-    let { id } = useParams();
-
-    const data = {
+    const [data, setData] = useState({
         lanes: [
             {
                 id: 'lane1',
                 title: 'Planned Tasks',
                 label: '2/2',
-                cards: [
-                    {id: 'Card1', title: 'Write Blog', description: 'Can AI make memes', label: '30 mins', draggable: false},
-                    {id: 'Card2', title: 'Pay Rent', description: 'Transfer via NEFT', label: '5 mins', metadata: {sha: 'be312a1'}},
-                    {id: 'Card2', title: 'Pay Rent', description: 'Transfer via NEFT', label: '5 mins', metadata: {sha: 'be312a1'}},
-                    {id: 'Card2', title: 'Pay Rent', description: 'Transfer via NEFT', label: '5 mins', metadata: {sha: 'be312a1'}},
-                    {id: 'Card2', title: 'Pay Rent', description: 'Transfer via NEFT', label: '5 mins', metadata: {sha: 'be312a1'}},
-                    {id: 'Card2', title: 'Pay Rent', description: 'Transfer via NEFT', label: '5 mins', metadata: {sha: 'be312a1'}},
-                    {id: 'Card2', title: 'Pay Rent', description: 'Transfer via NEFT', label: '5 mins', metadata: {sha: 'be312a1'}},
-                    {id: 'Card2', title: 'Pay Rent', description: 'Transfer via NEFT', label: '5 mins', metadata: {sha: 'be312a1'}},
-                ]
+                cards: []
             },
             {
                 id: 'lane2',
@@ -30,10 +21,30 @@ const BoardsShow = (props) => {
                 cards: []
             }
         ]
-    }
+    })
+    let { id } = useParams();
+
+    useEffect(() => {
+        fetch(`/api/boards/${id}`).then(response => response.json()).then(lanes => {
+            setData({
+                lanes: lanes
+            })
+        })
+    }, [])
+
+
 
     return (
-        <Board data={data} editable={true} canAddLanes={true} draggable={true}/>
+        <Board data={data}
+               editable={true}
+               canAddLanes={true}
+               draggable={true}
+               onCardAdd={onCardAdd(id)}
+               onLaneAdd={onLaneAdd(id)}
+               handleLaneDragEnd={handleLaneDragEnd(id)}
+               handleDragEnd={handleCardDragEnd(id)}
+               onDataChange={onDataChange()}
+        />
     )
 }
 
