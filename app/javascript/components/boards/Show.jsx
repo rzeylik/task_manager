@@ -4,6 +4,7 @@ import Board from 'react-trello'
 import {useParams} from "react-router-dom";
 import {csrfToken} from "../../js/helper";
 import {handleCardDragEnd, handleLaneDragEnd, onCardAdd, onDataChange, onLaneAdd} from "./board_actions";
+import Card from "./board/Card";
 
 const BoardsShow = (props) => {
     const [data, setData] = useState({
@@ -12,7 +13,12 @@ const BoardsShow = (props) => {
                 id: 'lane1',
                 title: 'Planned Tasks',
                 label: '2/2',
-                cards: []
+                cards: [
+                    {
+                        id: '123',
+                        title: 'Title'
+                    }
+                ]
             },
             {
                 id: 'lane2',
@@ -33,9 +39,22 @@ const BoardsShow = (props) => {
     }, [])
 
 
+    let eventBus = undefined
+
+    const setEventBus = (handle) => {
+        eventBus = handle
+    }
+
+    // eventBus.publish({})
+
+
+    const components = {
+        Card: Card
+    }
 
     return (
         <Board data={data}
+               components={components}
                editable={true}
                canAddLanes={true}
                draggable={true}

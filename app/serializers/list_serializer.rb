@@ -2,7 +2,7 @@ class ListSerializer < ActiveModel::Serializer
   attributes :id, :title, :cards
 
   def id
-    object.id.to_s
+    object.lane_id
   end
 
   def title

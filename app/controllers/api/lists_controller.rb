@@ -2,7 +2,11 @@ class Api::ListsController < ApplicationController
   def create
     board = Board.find params[:board_id]
     list = List.new(list_params)
-    list.position = board.lists.last.position + 1
+    if board.lists.any?
+      list.position = board.lists.last.position + 1
+    else
+      list.position = 0
+    end
     list.board = board
     if list.save
       head :ok
@@ -13,10 +17,10 @@ class Api::ListsController < ApplicationController
 
   def change_position
     board = Board.find params[:board_id]
-    from = params[:from]
-    to = params[:to]
+    list = List.find_by_lane_id params[:lane_id]
 
-    current_list = List.find_by_position from
+    from = list.position
+    to = params[:to]
 
     if from < to
       lists = board.lists.where(position: (from + 1)..to)
@@ -26,13 +30,13 @@ class Api::ListsController < ApplicationController
       lists.update_all('position = (position + 1)')
     end
 
-    current_list.position = to
-    current_list.save
+    list.position = to
+    list.save
   end
 
   private
 
   def list_params
-    params.require(:list).permit(:name)
+    params.require(:list).permit(:name, :lane_id)
   end
 end

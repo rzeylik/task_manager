@@ -6,6 +6,6 @@ class TaskSerializer < ActiveModel::Serializer
   end
 
   def id
-    object.id.to_s
+    object.card_id
   end
 end

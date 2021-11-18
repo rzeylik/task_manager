@@ -11,21 +11,19 @@ const post = (url, data, headers = defaultHeaders) => {
         headers: headers,
         method: 'POST',
         body: JSON.stringify(data)
-    }).then((response) => (response.json()))
+    })
 }
 
 export const onCardAdd = (boardId) => {
-    return async (card, listId) => {
+    return (card, laneId) => {
         const data = {
             task: {
-                name: card.title
+                name: card.title,
+                card_id: card.id
             },
-            list_id: listId
+            lane_id: laneId
         }
-        const id = await post(`/api/tasks`, data)
-        setNewIdToCard(card.id, id)
-        card.id = id
-        return card
+        post(`/api/tasks`, data)
     }
 }
 
@@ -33,7 +31,8 @@ export const onLaneAdd = (boardId) => {
     return (lane) => {
         const data = {
             list: {
-                name: lane.title
+                name: lane.title,
+                lane_id: lane.id
             },
             board_id: boardId
         }
@@ -46,6 +45,7 @@ export const handleLaneDragEnd = (boardId) => {
         const data = {
             from: from,
             to: to,
+            lane_id: params.id,
             board_id: boardId
         }
         post(`/api/lists/change_position`, data)
@@ -57,8 +57,8 @@ export const handleCardDragEnd = (boardId) => {
         console.log(cardId)
         const data = {
             task_id: cardId,
-            from_list_id: sourceLaneId,
-            to_list_id: targetLaneId,
+            from_lane_id: sourceLaneId,
+            to_lane_id: targetLaneId,
             position: position,
             board_id: boardId
         }
@@ -72,8 +72,3 @@ export const onDataChange = () => {
     }
 }
 
-export const setNewIdToCard = (previousId, newId) => {
-    // debugger
-    $(`[data-id=${previousId}]`).attr('data-id', newId)
-
-}

@@ -1,6 +1,11 @@
 class Api::TasksController < ApplicationController
+  def show
+    task = Task.find_by_card_id params[:id]
+    render json: task
+  end
+
   def create
-    list = List.find params[:list_id]
+    list = List.find_by_lane_id params[:lane_id]
     task = Task.new(task_params)
 
     if list.tasks.any?
@@ -11,7 +16,7 @@ class Api::TasksController < ApplicationController
 
     task.list = list
     if task.save
-      render json: task.id
+      render json: task
     else
       head 422
     end
@@ -19,16 +24,16 @@ class Api::TasksController < ApplicationController
 
   def change_position
     board = Board.find params[:board_id]
-    task = Task.find params[:task_id]
+    task = Task.find_by_card_id params[:task_id]
 
-    from_list_id = params[:from_list_id]
-    to_list_id = params[:to_list_id]
+    from_lane_id = params[:from_lane_id]
+    to_lane_id = params[:to_lane_id]
 
     from = task.position
     to = params[:position]
 
-    if from_list_id == to_list_id
-      list = List.find from_list_id
+    if from_lane_id == to_lane_id
+      list = List.find_by_lane_id from_lane_id
 
       if from < to
         tasks = list.tasks.where(position: (from + 1)..to)
@@ -41,8 +46,8 @@ class Api::TasksController < ApplicationController
       task.position = to
       task.save
     else
-      from_list = List.find from_list_id
-      to_list = List.find to_list_id
+      from_list = List.find_by_lane_id from_lane_id
+      to_list = List.find_by_lane_id to_lane_id
 
       tasks = from_list.tasks.where("position > ?", from)
       tasks.update_all('position = (position - 1)')
@@ -59,6 +64,6 @@ class Api::TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:name)
+    params.require(:task).permit(:name, :card_id)
   end
 end
