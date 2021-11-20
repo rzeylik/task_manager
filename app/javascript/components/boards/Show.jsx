@@ -3,8 +3,10 @@ import PropTypes from "prop-types"
 import Board from 'react-trello'
 import {useParams} from "react-router-dom";
 import {csrfToken} from "../../js/helper";
-import {handleCardDragEnd, handleLaneDragEnd, onCardAdd, onDataChange, onLaneAdd} from "./board_actions";
+import {handleCardDragEnd, handleLaneDragEnd, onCardAdd, onCardDelete, onDataChange, onLaneAdd, onLaneDelete} from "./board_actions";
 import Card from "./board/Card";
+import NewCardForm from "./board/NewCardForm";
+import NewLaneForm from "./board/lane/NewLaneForm";
 
 const BoardsShow = (props) => {
     const [data, setData] = useState({
@@ -49,7 +51,9 @@ const BoardsShow = (props) => {
 
 
     const components = {
-        Card: Card
+        Card: Card,
+        NewCardForm: NewCardForm,
+        NewLaneForm: NewLaneForm
     }
 
     return (
@@ -59,10 +63,13 @@ const BoardsShow = (props) => {
                canAddLanes={true}
                draggable={true}
                onCardAdd={onCardAdd(id)}
+               onCardDelete={onCardDelete(id)}
                onLaneAdd={onLaneAdd(id)}
+               onLaneDelete={onLaneDelete(id)}
                handleLaneDragEnd={handleLaneDragEnd(id)}
                handleDragEnd={handleCardDragEnd(id)}
                onDataChange={onDataChange()}
+
         />
     )
 }

@@ -16,6 +16,8 @@ gem 'react-rails'
 gem 'ancestry'
 gem 'rails_admin'
 gem 'active_model_serializers'
+gem 'blueprinter'
+gem 'oj'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 

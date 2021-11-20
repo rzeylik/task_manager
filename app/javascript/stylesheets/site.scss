@@ -52,3 +52,32 @@ body {
 //  /* not handle on */
 //  background: rgb(1, 1, 1);
 //}
+
+.newCardTitleInputWrapper div {
+  max-width: 100%;
+  outline: none;
+  border: none;
+  border-radius:  5px;
+}
+
+.react-trello-board {
+  background-image: url("../images/cat.gif");
+  background-size: 50px;
+  //height: 100% !important;
+  //max-height: calc(100vh - 112px);
+}
+
+.card-dialog-actions {
+  h6 {
+    color: #5e6c84;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+    margin-bottom: 0;
+    margin-top: 5px;
+  }
+
+  button {
+    width: 100%;
+  }
+}

@@ -6,10 +6,10 @@ const defaultHeaders = {
     'X-CSRF-TOKEN': csrfToken()
 }
 
-const post = (url, data, headers = defaultHeaders) => {
+const post = (url, data, headers = defaultHeaders, method = 'POST') => {
     return fetch(url, {
         headers: headers,
-        method: 'POST',
+        method: method,
         body: JSON.stringify(data)
     })
 }
@@ -27,6 +27,15 @@ export const onCardAdd = (boardId) => {
     }
 }
 
+export const onCardDelete = (boardId) => {
+    return (cardId, laneId) => {
+        const data = {
+            card_id: cardId
+        }
+        post(`/api/tasks/${cardId}`, data, defaultHeaders, 'DELETE')
+    }
+}
+
 export const onLaneAdd = (boardId) => {
     return (lane) => {
         const data = {
@@ -37,6 +46,15 @@ export const onLaneAdd = (boardId) => {
             board_id: boardId
         }
         post(`/api/lists`, data)
+    }
+}
+
+export const onLaneDelete = (boardId) => {
+    return (laneId) => {
+        const data = {
+            lane_id: laneId
+        }
+        post(`/api/lists/${laneId}`, data, defaultHeaders, 'DELETE')
     }
 }
 

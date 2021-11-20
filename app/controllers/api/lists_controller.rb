@@ -15,6 +15,11 @@ class Api::ListsController < ApplicationController
     end
   end
 
+  def destroy
+    list = List.find_by_lane_id params[:lane_id]
+    list.destroy
+  end
+
   def change_position
     board = Board.find params[:board_id]
     list = List.find_by_lane_id params[:lane_id]

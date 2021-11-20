@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_12_070309) do
+ActiveRecord::Schema.define(version: 2021_11_20_185448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,16 @@ ActiveRecord::Schema.define(version: 2021_11_12_070309) do
     t.index ["board_id"], name: "index_lists_on_board_id"
   end
 
+  create_table "task_histories", force: :cascade do |t|
+    t.bigint "task_id", null: false
+    t.bigint "user_id", null: false
+    t.string "action"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["task_id"], name: "index_task_histories_on_task_id"
+    t.index ["user_id"], name: "index_task_histories_on_user_id"
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -49,6 +59,9 @@ ActiveRecord::Schema.define(version: 2021_11_12_070309) do
     t.bigint "list_id", null: false
     t.integer "position"
     t.string "card_id"
+    t.text "description"
+    t.datetime "due_to"
+    t.date "started_at"
     t.index ["list_id"], name: "index_tasks_on_list_id"
   end
 
@@ -83,6 +96,8 @@ ActiveRecord::Schema.define(version: 2021_11_12_070309) do
   add_foreign_key "board_rights", "users"
   add_foreign_key "boards", "workspaces"
   add_foreign_key "lists", "boards"
+  add_foreign_key "task_histories", "tasks"
+  add_foreign_key "task_histories", "users"
   add_foreign_key "tasks", "lists"
   add_foreign_key "workspace_rights", "users"
   add_foreign_key "workspace_rights", "workspaces"

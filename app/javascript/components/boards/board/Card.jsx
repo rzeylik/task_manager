@@ -43,10 +43,10 @@ const Card = (props) => {
         setModalOpen(false)
     }
 
-    // const onDelete = e => {
-    //     this.props.onDelete()
-    //     e.stopPropagation()
-    // }
+    const onDelete = e => {
+        props.onDelete()
+        e.stopPropagation()
+    }
 
     // const updateCard = (card) => {
     //     onChange({...card, id})
@@ -71,7 +71,7 @@ const Card = (props) => {
                     </Footer>
                 )}
             </MovableCardWrapper>
-            <CardModal open={modalOpen} onClose={handleModalClose} id={id} />
+            <CardModal onDelete={props.onDelete} open={modalOpen} onClose={handleModalClose} id={id} />
         </div>
 
     )
