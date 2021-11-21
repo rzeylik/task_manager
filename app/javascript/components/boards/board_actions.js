@@ -1,18 +1,4 @@
-import {csrfToken} from "../../js/helper";
-
-const defaultHeaders = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-    'X-CSRF-TOKEN': csrfToken()
-}
-
-const post = (url, data, headers = defaultHeaders, method = 'POST') => {
-    return fetch(url, {
-        headers: headers,
-        method: method,
-        body: JSON.stringify(data)
-    })
-}
+import {defaultHeaders, post} from "../../js/helper";
 
 export const onCardAdd = (boardId) => {
     return (card, laneId) => {

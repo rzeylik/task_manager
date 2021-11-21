@@ -4,8 +4,8 @@ import Board from 'react-trello'
 import {useParams} from "react-router-dom";
 import {csrfToken} from "../../js/helper";
 import {handleCardDragEnd, handleLaneDragEnd, onCardAdd, onCardDelete, onDataChange, onLaneAdd, onLaneDelete} from "./board_actions";
-import Card from "./board/Card";
-import NewCardForm from "./board/NewCardForm";
+import BoardCard from "./board/card/BoardCard";
+import NewCardForm from "./board/card/NewCardForm";
 import NewLaneForm from "./board/lane/NewLaneForm";
 
 const BoardsShow = (props) => {
@@ -51,7 +51,7 @@ const BoardsShow = (props) => {
 
 
     const components = {
-        Card: Card,
+        Card: BoardCard,
         NewCardForm: NewCardForm,
         NewLaneForm: NewLaneForm
     }

@@ -63,6 +63,11 @@ module Api
       task.save
     end
 
+    def update
+      task = Task.find_by_card_id params[:id]
+      task.update(task_params)
+    end
+
     def destroy
       task = Task.find_by_card_id params[:card_id]
       from_list = task.list
@@ -83,7 +88,7 @@ module Api
     end
 
     def task_params
-      params.require(:task).permit(:name, :card_id)
+      params.require(:task).permit(:name, :card_id, :description)
     end
   end
 end

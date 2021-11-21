@@ -9,12 +9,10 @@ import {
     Detail,
     Footer
 } from 'react-trello/dist/styles/Base'
-import InlineInput from 'react-trello/dist/widgets/InlineInput'
 import Tag from 'react-trello/dist/components/Card/Tag'
-import DeleteButton from 'react-trello/dist/widgets/DeleteButton'
 import CardModal from "./CardModal";
 
-const Card = (props) => {
+const BoardCard = (props) => {
     const {
         showDeleteButton,
         style,
@@ -78,7 +76,7 @@ const Card = (props) => {
 
 }
 
-Card.propTypes = {
+BoardCard.propTypes = {
     showDeleteButton: PropTypes.bool,
     onDelete: PropTypes.func,
     onClick: PropTypes.func,
@@ -92,7 +90,7 @@ Card.propTypes = {
     tags: PropTypes.array,
 }
 
-Card.defaultProps = {
+BoardCard.defaultProps = {
     showDeleteButton: true,
     onDelete: () => {},
     onClick: () => {},
@@ -105,4 +103,4 @@ Card.defaultProps = {
     className: ''
 }
 
-export default Card
+export default BoardCard

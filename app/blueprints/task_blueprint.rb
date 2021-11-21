@@ -1,4 +1,6 @@
 class TaskBlueprint < Blueprinter::Base
+  fields :description
+
   field :card_id, name: :id
   field :name, name: :title
   field :list_name do |task|

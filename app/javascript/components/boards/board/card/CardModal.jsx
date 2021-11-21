@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react"
 import PropTypes from "prop-types"
 import {Dialog} from "@mui/material";
+import CardContent from "./CardContent";
 
 const CardModal = (props) => {
     const [data, setData] = useState({ title: 'loading', actions: [] })
@@ -31,8 +32,7 @@ const CardModal = (props) => {
 
                 <div className="row pt-2">
                     <div className="col-10 card-dialog-content">
-                        <h5>History</h5>
-                        { data.actions.map(action => <div key={action.id}>{action.user_name} {action.action} ({action.time_ago} ago)</div>)}
+                        <CardContent data={data} />
                     </div>
                     <div className="col-2 card-dialog-actions">
                         <h6>Add to card</h6>

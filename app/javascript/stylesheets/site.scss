@@ -81,3 +81,16 @@ body {
     width: 100%;
   }
 }
+
+
+.fake-textarea {
+  cursor: pointer;
+  background-color: #091e420a;
+  border: none;
+  border-radius: 3px;
+  box-shadow: none;
+  display: block;
+  min-height: 40px;
+  padding: 8px 12px;
+  text-decoration: none;
+}
