@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
-import CardSectionTitle from "./CardSectionTitle";
+import CardContentTitle from "./CardContentTitle";
 
 const CardHistory = (props) => {
     const {
@@ -9,7 +9,7 @@ const CardHistory = (props) => {
 
     return (
         <>
-            <CardSectionTitle>History</CardSectionTitle>
+            <CardContentTitle>History</CardContentTitle>
             { actions.map(action => <div key={action.id}>{action.user_name} {action.action} ({action.time_ago} ago)</div>)}
         </>
     )

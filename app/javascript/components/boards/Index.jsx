@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react"
 import PropTypes from "prop-types"
 import {Container} from "@mui/material";
+import BoardIndexCard from "./board/BoardIndexCard";
 
 const BoardsIndex = (props) => {
     const [boards, setBoards] = useState([])
@@ -11,9 +12,11 @@ const BoardsIndex = (props) => {
 
     return (
         <Container sx={{paddingTop: '20px', paddingBottom: '20px', flexGrow: '1'}}>
-            { boards.map((w, index) => (
-                <h2 key={index}>{w.name}</h2>
-            ))}
+            <div className={'d-flex flex-wrap'}>
+                { boards.map((board, index) => (
+                    <BoardIndexCard key={index} board={board} />
+                ))}
+            </div>
         </Container>
     )
 }

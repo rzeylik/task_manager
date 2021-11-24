@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 
-const CardSectionTitle = ({children}) => {
+const CardContentTitle = ({children}) => {
     return (
         <h5>
             { children }
@@ -10,6 +10,6 @@ const CardSectionTitle = ({children}) => {
 
 }
 
-CardSectionTitle.propTypes = {}
+CardContentTitle.propTypes = {}
 
-export default CardSectionTitle
+export default CardContentTitle

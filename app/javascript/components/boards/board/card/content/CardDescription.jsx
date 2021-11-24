@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
-import CardSectionTitle from "./CardSectionTitle";
+import CardContentTitle from "./CardContentTitle";
 import TextArea from "antd/es/input/TextArea";
-import {updateDescription} from "./card_actions";
+import {updateDescription} from "../card_actions";
 
 const CardDescription = (props) => {
     const [editMode, setEditMode] = useState(false)
@@ -11,8 +11,6 @@ const CardDescription = (props) => {
     useEffect(() => {
         setDescription(props.description)
     }, [props.description])
-
-    console.log(props)
 
     const {
         cardId
@@ -40,7 +38,7 @@ const CardDescription = (props) => {
 
     return (
         <>
-            <CardSectionTitle>Description</CardSectionTitle>
+            <CardContentTitle>Description</CardContentTitle>
             <div onClick={enableEditMode} className={`${editMode ? 'd-none' : ''}`}>
                 {
                     description ||
@@ -50,7 +48,7 @@ const CardDescription = (props) => {
                 }
             </div>
             <div className={`${editMode ? '' : 'd-none'}`}>
-                <TextArea autoFocus id={'card-description-edit'} value={description} onChange={onDescriptionChange} placeholder={'Add some description here...'} rows={3} className={'w-100 p-2'} />
+                <TextArea autoFocus id={'card-description-edit'} value={description} onChange={onDescriptionChange} placeholder={'Add some description here...'} rows={3} className={'w-100 p-2 mb-2    '} />
                 <div>
                     <button onClick={saveDescription} className={'btn btn-sm btn-primary me-1'}>Save</button>
                     <button onClick={disableEditMode} className={'btn btn-sm btn-secondary'}>Cancel</button>

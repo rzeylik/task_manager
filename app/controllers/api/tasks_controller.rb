@@ -63,9 +63,34 @@ module Api
       task.save
     end
 
+    def users
+      task = Task.find_by_card_id params[:id]
+      render json: task.board.all_users
+    end
+
+    def users_to_assign
+      task = Task.find_by_card_id params[:id]
+      render json: task.board.all_users - task.users
+    end
+
+    def join
+      task = Task.find_by_card_id params[:id]
+
+      return if TaskAssignment.where(task: task, user: current_user).any?
+
+      assignment = TaskAssignment.new(task: task, user: current_user)
+      assignment.save
+      history_on_join(assignment)
+    end
+
+    def assign_user
+
+    end
+
     def update
       task = Task.find_by_card_id params[:id]
       task.update(task_params)
+      update_history(task)
     end
 
     def destroy
@@ -79,6 +104,12 @@ module Api
 
     private
 
+    def update_history(task)
+      Rails.logger.info
+      TaskHistory.create(user: current_user, task: task, action: "set due to date to #{task.due_to.strftime('%d/%m/%Y %H:%M')}") if (task_params[:due_to])
+      TaskHistory.create(user: current_user, task: task, action: 'removed due to date') if (task_params[:due_to] === nil)
+    end
+
     def history_on_create(task)
       TaskHistory.create(user: current_user, task: task, action: "added this card to #{task.list.name}")
     end
@@ -87,8 +118,12 @@ module Api
       TaskHistory.create(user: current_user, task: task, action: "moved this card to #{task.list.name}")
     end
 
+    def history_on_join(task_assignment)
+      TaskHistory.create(user: task_assignment.user, task: task_assignment.task, action: 'joined this card')
+    end
+
     def task_params
-      params.require(:task).permit(:name, :card_id, :description)
+      params.require(:task).permit(:name, :card_id, :description, :due_to)
     end
   end
 end

@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from "react"
 import PropTypes from "prop-types"
 import {Dialog} from "@mui/material";
-import CardContent from "./CardContent";
+import CardContent from "./content/CardContent";
+import CardActions from "./actions/CardActions";
 
 const CardModal = (props) => {
     const [data, setData] = useState({ title: 'loading', actions: [] })
 
     useEffect(() => {
         if(props.open === true) {
-            fetch(`/api/tasks/${props.id}`).then(response => response.json()).then(data => { setData(data); console.log(data)})
-
+            fetch(`/api/tasks/${props.id}`).then(response => response.json()).then(data => { setData(data);})
         }
     }, [props.open])
 
@@ -21,7 +21,7 @@ const CardModal = (props) => {
             fullWidth={true}
             sx={{marginBottom: '100px'}}
         >
-            <div className={'p-4'}>
+            <div className={'p-4 ps-5'}>
                 <div className="d-flex justify-content-between">
                     <div className="">
                         <h5 className={'mb-0'}>{ data.title }</h5>
@@ -35,11 +35,7 @@ const CardModal = (props) => {
                         <CardContent data={data} />
                     </div>
                     <div className="col-2 card-dialog-actions">
-                        <h6>Add to card</h6>
-                        <button className={'btn btn-sm btn-outline-secondary'}>Members</button>
-                        <hr/>
-                        <h6>Actions</h6>
-                        <button className={'btn btn-sm btn-danger'} onClick={props.onDelete}>Delete card</button>
+                        <CardActions data={data} onDelete={props.onDelete} />
                     </div>
                 </div>
             </div>

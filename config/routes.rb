@@ -13,6 +13,11 @@ Rails.application.routes.draw do
       end
     end
     resources :tasks do
+      member do
+        post 'join'
+        get 'users'
+        get 'users_to_assign'
+      end
       collection do
         post 'change_position'
       end

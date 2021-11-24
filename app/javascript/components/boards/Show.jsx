@@ -33,7 +33,13 @@ const BoardsShow = (props) => {
     let { id } = useParams();
 
     useEffect(() => {
-        fetch(`/api/boards/${id}`).then(response => response.json()).then(lanes => {
+        fetch(`/api/boards/${id}`).then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                window.location.href = "/";
+            }
+        }).then(lanes => {
             setData({
                 lanes: lanes
             })

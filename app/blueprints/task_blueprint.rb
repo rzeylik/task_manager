@@ -6,6 +6,9 @@ class TaskBlueprint < Blueprinter::Base
   field :list_name do |task|
     task.list.name
   end
+  field :due_to do |task|
+    task.due_to&.strftime('%Y-%m-%dT%H:%M')
+  end
 
   # view :with_list do
   #   association :list
@@ -13,6 +16,7 @@ class TaskBlueprint < Blueprinter::Base
 
   view :with_history do
     association :task_histories, name: :actions, blueprint: TaskHistoryBlueprint
+    association :task_assignments, name: :assignments, blueprint: TaskAssignmentBlueprint
   end
 
 end
