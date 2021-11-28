@@ -1,28 +1,34 @@
 import {defaultHeaders, post} from "../../js/helper";
 
-export const onCardAdd = (boardId) => {
+export const onCardAdd = (boardId, socketId = null) => {
     return (card, laneId) => {
         const data = {
             task: {
                 name: card.title,
                 card_id: card.id
             },
-            lane_id: laneId
+            socket_id: socketId,
+            lane_id: laneId,
+            board_id: boardId
         }
         post(`/api/tasks`, data)
     }
 }
 
-export const onCardDelete = (boardId) => {
+export const onCardDelete = (boardId, socketId = null) => {
     return (cardId, laneId) => {
+        console.log(socketId)
         const data = {
-            card_id: cardId
+            card_id: cardId,
+            lane_id: laneId,
+            board_id: boardId,
+            socket_id: socketId
         }
         post(`/api/tasks/${cardId}`, data, defaultHeaders, 'DELETE')
     }
 }
 
-export const onLaneAdd = (boardId) => {
+export const onLaneAdd = (boardId, socketId = null) => {
     return (lane) => {
         const data = {
             list: {
@@ -35,16 +41,17 @@ export const onLaneAdd = (boardId) => {
     }
 }
 
-export const onLaneDelete = (boardId) => {
+export const onLaneDelete = (boardId, socketId = null) => {
     return (laneId) => {
         const data = {
-            lane_id: laneId
+            lane_id: laneId,
+            board_id: boardId
         }
         post(`/api/lists/${laneId}`, data, defaultHeaders, 'DELETE')
     }
 }
 
-export const handleLaneDragEnd = (boardId) => {
+export const handleLaneDragEnd = (boardId, socketId = null) => {
     return (from, to, params) => {
         const data = {
             from: from,
@@ -56,15 +63,15 @@ export const handleLaneDragEnd = (boardId) => {
     }
 }
 
-export const handleCardDragEnd = (boardId) => {
+export const handleCardDragEnd = (boardId, socketId = null) => {
     return (cardId, sourceLaneId, targetLaneId, position, cardDetails) => {
-        console.log(cardId)
         const data = {
             task_id: cardId,
             from_lane_id: sourceLaneId,
             to_lane_id: targetLaneId,
             position: position,
-            board_id: boardId
+            board_id: boardId,
+            socket_id: socketId,
         }
         post(`/api/tasks/change_position`, data)
     }

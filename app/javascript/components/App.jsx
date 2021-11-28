@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import Footer from "./layout/Footer";
 import BoardsIndex from "./boards/Index";
 import BoardsShow from "./boards/Show";
+import {PusherContext} from "./boards/board/PusherContext";
 
 const App = (props) => {
     return (

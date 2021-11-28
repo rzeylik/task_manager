@@ -19,4 +19,10 @@ class TaskBlueprint < Blueprinter::Base
     association :task_assignments, name: :assignments, blueprint: TaskAssignmentBlueprint
   end
 
+  view :pusher do
+    field :lane_id do |task|
+      task.list.lane_id
+    end
+  end
+
 end

@@ -19,6 +19,7 @@ module Api
       if task.save
         render json: task
         history_on_create(task)
+        Pusher.trigger("board-channel-#{params[:board_id]}", 'create-card-event', TaskBlueprint.render_as_hash(task, view: :pusher), { socket_id: params[:socket_id] })
       else
         head 422
       end
@@ -58,9 +59,11 @@ module Api
         history_on_move(task)
       end
 
-
       task.position = to
       task.save
+      Pusher.trigger("board-channel-#{params[:board_id]}", 'move-event',
+                     { from_lane_id: from_lane_id, to_lane_id: to_lane_id, card_id: params[:task_id], index: to },
+                     { socket_id: params[:socket_id] })
     end
 
     def users
@@ -84,7 +87,6 @@ module Api
     end
 
     def assign_user
-
     end
 
     def update
@@ -100,14 +102,19 @@ module Api
       tasks = from_list.tasks.where('position > ?', task.position)
       tasks.update_all('position = (position - 1)')
       task.destroy
+      Pusher.trigger("board-channel-#{params[:board_id]}", 'delete-card-event',
+                     { lane_id: from_list.lane_id, card_id: params[:card_id] },
+                     { socket_id: params[:socket_id] })
     end
 
     private
 
+    # TODO
+    # fix due_to if nil
     def update_history(task)
-      Rails.logger.info
       TaskHistory.create(user: current_user, task: task, action: "set due to date to #{task.due_to.strftime('%d/%m/%Y %H:%M')}") if (task_params[:due_to])
       TaskHistory.create(user: current_user, task: task, action: 'removed due to date') if (task_params[:due_to] === nil)
+
     end
 
     def history_on_create(task)
