@@ -9,7 +9,13 @@ class Api::BoardsController < ApplicationController
 
   def show
     board = Board.find params[:id]
-    render json: board.lists
+    render json: BoardBlueprint.render(board, view: :with_lists)
+  end
+
+  def add_image
+    board = Board.find params[:id]
+    board.image = params[:image]
+    board.save
   end
 
   private

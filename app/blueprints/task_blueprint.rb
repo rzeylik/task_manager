@@ -24,5 +24,4 @@ class TaskBlueprint < Blueprinter::Base
       task.list.lane_id
     end
   end
-
 end

@@ -22,6 +22,10 @@ export const joinToCard = (cardId) => {
     post(`/api/tasks/${cardId}/join`, {})
 }
 
+export const leaveFromCard = (cardId) => {
+    post(`/api/tasks/${cardId}/leave`, {})
+}
+
 export const getUsers = (cardId) => {
     post(`/api/tasks/${cardId}/users`, {})
 }

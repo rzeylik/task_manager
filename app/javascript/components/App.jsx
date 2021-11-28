@@ -9,13 +9,21 @@ import NotFound from "./pages/NotFound";
 import Footer from "./layout/Footer";
 import BoardsIndex from "./boards/Index";
 import BoardsShow from "./boards/Show";
-import {PusherContext} from "./boards/board/PusherContext";
+import Pusher from "pusher-js";
+
+window.pusher = new Pusher('17df5d5417699077228b', {
+    cluster: 'eu'
+});
+
+
 
 const App = (props) => {
+    window.current_user = props.user;
+
     return (
         <BrowserRouter>
             <div className="site">
-                <Header isLoggedIn={!!props.user} />
+                <Header isLoggedIn={!!props.user} user={props.user} />
                     <Routes>
                         <Route path="/" element={<HomeIndex />} />
                         <Route path="workspaces" element={<WorkspacesIndex />} />

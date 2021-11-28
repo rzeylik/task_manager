@@ -1,20 +1,23 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
-import {joinToCard} from "../card_actions";
+import {joinToCard, leaveFromCard} from "../card_actions";
 
 const CardJoin = (props) => {
     const {
-        cardId
+        cardId,
+        isAssigned
     } = props
-
-    console.log(props)
 
     const joinCard = () => {
         joinToCard(cardId)
     }
 
+    const leaveCard = () => {
+        leaveFromCard(cardId)
+    }
+
     return (
-        <button onClick={joinCard} className={'btn btn-sm btn-outline-secondary mb-2'}>Join</button>
+        <button onClick={isAssigned ? leaveCard : joinCard} className={'btn btn-sm btn-outline-secondary mb-2'}>{isAssigned ? 'Leave' : 'Join'}</button>
     )
 
 }

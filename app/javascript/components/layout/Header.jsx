@@ -2,17 +2,9 @@ import React from "react"
 import PropTypes from "prop-types"
 import {AppBar, Box, Button, Menu, MenuItem, Toolbar, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
+import UserCircle from "../users/UserCircle";
 
 const Header = (props) => {
-    // const [anchorEl, setAnchorEl] = React.useState(null);
-    // const open = Boolean(anchorEl);
-    // const handleClick = (event) => {
-    //     setAnchorEl(event.currentTarget);
-    // };
-    // const handleClose = () => {
-    //     setAnchorEl(null);
-    // };
-
     return (
         <AppBar position="static">
             <Toolbar variant="dense">
@@ -23,11 +15,12 @@ const Header = (props) => {
                         <Link className={'header-link'} to={'/boards'}>Boards</Link>
                     </Typography>
                 </Box>
-                <Box>
+                <div className={'d-flex'}>
                     { props.isLoggedIn && <Button rel={"nofollow"} data-method={"DELETE"} href={'/users/sign_out'} color="inherit">Sign out</Button> }
+                    { props.isLoggedIn && <UserCircle className={'mx-2'} user={props.user} withTooltip={false} /> }
                     { !props.isLoggedIn && <Button href={'/users/sign_in'} color="inherit">Sign in</Button> }
                     { !props.isLoggedIn && <Button href={'/users/sign_up'} color="inherit">Sign up</Button> }
-                </Box>
+                </div>
             </Toolbar>
         </AppBar>
     )

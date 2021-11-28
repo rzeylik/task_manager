@@ -6,7 +6,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :workspaces
-    resources :boards
+    resources :boards do
+      member do
+        post 'add_image'
+      end
+    end
     resources :lists do
       collection do
         post 'change_position'
@@ -15,6 +19,7 @@ Rails.application.routes.draw do
     resources :tasks do
       member do
         post 'join'
+        post 'leave'
         get 'users'
         get 'users_to_assign'
       end

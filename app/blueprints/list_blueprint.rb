@@ -5,4 +5,8 @@ class ListBlueprint < Blueprinter::Base
   view :pusher do
     association :tasks, name: :cards, blueprint: TaskBlueprint, view: :pusher
   end
+
+  view :show do
+    association :tasks, name: :cards, blueprint: TaskBlueprint
+  end
 end

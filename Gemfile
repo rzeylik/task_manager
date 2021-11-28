@@ -21,6 +21,7 @@ gem 'blueprinter'
 gem 'oj'
 
 gem 'pusher'
+gem 'carrierwave'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 

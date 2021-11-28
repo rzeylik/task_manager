@@ -10,6 +10,12 @@ const CardModal = (props) => {
     useEffect(() => {
         if(props.open === true) {
             fetch(`/api/tasks/${props.id}`).then(response => response.json()).then(data => { setData(data);})
+            const channel = window.pusher.subscribe(`task-channel-${props.id}`);
+            channel.bind('task-update', (data) => {
+                setData(data);
+            })
+        } else {
+            window.pusher.unsubscribe(`task-channel-${props.id}`)
         }
     }, [props.open])
 

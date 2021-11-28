@@ -1,58 +1,7 @@
 @import "~bootstrap/scss/bootstrap";
 @import "~antd/dist/antd";
 
-body {
-  background-color: white;
-}
-
-.header-link {
-  color: white;
-  text-underline: none;
-  text-decoration: none;
-  text-transform: uppercase;
-  padding: 0 10px;
-}
-
-.site {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-}
-
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-::-webkit-scrollbar-track {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-}
-::-webkit-scrollbar-thumb {
-  background-color: #11171a;
-  //border-radius: 10px;
-}
-
-::-webkit-scrollbar-track {
-  /* Track */
-  box-shadow: inset 0 0 5px grey;
-  border-radius: 10px;
-}
-//
-//::-webkit-scrollbar-thumb {
-//  /* Handle */
-//  background: rgb(110, 110, 110);
-//  border-radius: 10px;
-//}
-//
-//::-webkit-scrollbar-thumb:hover {
-//  /* Handle on hover */
-//  background: rgb(110, 110, 110);
-//}
-//
-//::-webkit-scrollbar-track-piece {
-//  /* not handle on */
-//  background: rgb(1, 1, 1);
-//}
+@import "common";
 
 .newCardTitleInputWrapper div {
   max-width: 100%;
@@ -63,9 +12,12 @@ body {
 
 .react-trello-board {
   background-image: url("../images/cat.gif");
-  background-size: 50px;
-  //height: 100% !important;
-  //max-height: calc(100vh - 112px);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  //background-size: 50px;
+  height: calc(100vh - 112px) !important;
+  width: 100%;
 }
 
 .card-dialog-actions {
@@ -82,7 +34,6 @@ body {
     width: 100%;
   }
 }
-
 
 .fake-textarea {
   cursor: pointer;
@@ -113,4 +64,22 @@ body {
   h4 {
     margin: 0;
   }
+}
+
+.user-circle {
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(black, 0.1);
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.board-sidebar {
+  max-width: 300px;
+  width: 100%;
 }

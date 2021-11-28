@@ -11,11 +11,9 @@ const CardActions = (props) => {
         data
     } = props
 
-    console.log(data)
-
     return (
         <>
-            <CardJoin cardId={data.id} />
+            <CardJoin cardId={data.id} isAssigned={data?.assignments?.find(assignment => assignment.user.email === window.current_user.email)} />
             <CardActionsTitle>Add to card</CardActionsTitle>
             <CardActionsMembers cardId={data.id} />
             <CardActionsDate cardId={data.id} dueTo={data.due_to} />

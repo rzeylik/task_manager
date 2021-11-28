@@ -1,5 +1,5 @@
 class UserBlueprint < Blueprinter::Base
   identifier :id
 
-  field :email, name: :username
+  fields :email, :first_name, :last_name
 end

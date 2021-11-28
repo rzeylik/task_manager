@@ -12,9 +12,11 @@ const CardContent = (props) => {
 
     return (
         <>
-            <div className="mb-2">
-                <CardAssignments assignments={data.assignments} />
-            </div>
+            { data?.assignments?.length !== 0 &&
+                <div className="mb-2">
+                    <CardAssignments assignments={data.assignments} />
+                </div>
+            }
             <div className="mb-2">
                 <CardDescription cardId={data.id} description={data.description} />
             </div>

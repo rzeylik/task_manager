@@ -6,7 +6,7 @@ import {handleCardDragEnd, handleLaneDragEnd, onCardAdd, onCardDelete, onDataCha
 import BoardCard from "./board/card/BoardCard";
 import NewCardForm from "./board/card/NewCardForm";
 import NewLaneForm from "./board/lane/NewLaneForm";
-import Pusher from "pusher-js";
+import BoardSidebar from "./board/BoardSidebar";
 
 const BoardsShow = (props) => {
     let eventBus = undefined
@@ -15,7 +15,8 @@ const BoardsShow = (props) => {
     }
 
     const [socketId, setSocketId] = useState(null)
-    const [data, setData] = useState({
+    const [imageUrl, setImageUrl] = useState('')
+    const [lanes, setLanes] = useState({
         lanes: [
             {
                 id: 'lane1',
@@ -45,15 +46,15 @@ const BoardsShow = (props) => {
             } else {
                 window.location.href = "/";
             }
-        }).then(lanes => {
-            setData({
-                lanes: lanes
+        }).then(board => {
+            console.log(board)
+            setImageUrl(board.image)
+            setLanes({
+                lanes: board.lanes
             })
         })
 
-        const pusher = new Pusher('17df5d5417699077228b', {
-            cluster: 'eu'
-        });
+        const pusher = window.pusher
 
         pusher.connection.bind("connected", () => {
             setSocketId(pusher.connection.socket_id);
@@ -71,7 +72,7 @@ const BoardsShow = (props) => {
             eventBus.publish({type: 'REMOVE_CARD', laneId: event.lane_id, cardId: event.card_id})
         });
         channel.bind('lanes-event', (event) => {
-            setData({ lanes: event })
+            setLanes({ lanes: event })
         })
     }, [])
 
@@ -83,21 +84,25 @@ const BoardsShow = (props) => {
     }
 
     return (
-        <Board data={data}
-               eventBusHandle={setEventBus}
-               components={components}
-               editable={true}
-               canAddLanes={true}
-               draggable={true}
-               onCardAdd={onCardAdd(id, socketId)}
-               onCardDelete={onCardDelete(id, socketId)}
-               onLaneAdd={onLaneAdd(id, socketId)}
-               onLaneDelete={onLaneDelete(id, socketId)}
-               handleLaneDragEnd={handleLaneDragEnd(id, socketId)}
-               handleDragEnd={handleCardDragEnd(id, socketId)}
-               onDataChange={onDataChange()}
+        <div className={'d-flex'}>
+            <Board data={lanes}
+                   eventBusHandle={setEventBus}
+                   components={components}
+                   editable={true}
+                   canAddLanes={true}
+                   draggable={true}
+                   onCardAdd={onCardAdd(id, socketId)}
+                   onCardDelete={onCardDelete(id, socketId)}
+                   onLaneAdd={onLaneAdd(id, socketId)}
+                   onLaneDelete={onLaneDelete(id, socketId)}
+                   handleLaneDragEnd={handleLaneDragEnd(id, socketId)}
+                   handleDragEnd={handleCardDragEnd(id, socketId)}
+                   onDataChange={onDataChange()}
+                   style={{backgroundImage: `url('${imageUrl}')`}}
 
-        />
+            />
+            <BoardSidebar boardId={id} />
+        </div>
     )
 }
 

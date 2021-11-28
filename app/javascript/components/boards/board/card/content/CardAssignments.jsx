@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import CardContentTitle from "./CardContentTitle";
 import BoardCard from "../BoardCard";
+import UserCircle from "../../../../users/UserCircle";
 
 const CardAssignments = (props) => {
     const {
@@ -11,7 +12,9 @@ const CardAssignments = (props) => {
     return (
         <>
             <CardContentTitle>User assignments</CardContentTitle>
-            { assignments.map(assignment => <div key={assignment.id}>{assignment.user_name}</div>)}
+            <div className="d-flex">
+                { assignments.map(assignment => <UserCircle key={assignment.id} className={'me-2'} user={assignment.user} />)}
+            </div>
         </>
     )
 

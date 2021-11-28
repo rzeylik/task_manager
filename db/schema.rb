@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_20_185448) do
+ActiveRecord::Schema.define(version: 2021_11_28_163015) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2021_11_20_185448) do
     t.bigint "board_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "can_edit", default: true
     t.index ["board_id"], name: "index_board_rights_on_board_id"
     t.index ["user_id"], name: "index_board_rights_on_user_id"
   end
@@ -29,6 +30,9 @@ ActiveRecord::Schema.define(version: 2021_11_20_185448) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.string "image"
+    t.index ["user_id"], name: "index_boards_on_user_id"
     t.index ["workspace_id"], name: "index_boards_on_workspace_id"
   end
 
@@ -40,6 +44,15 @@ ActiveRecord::Schema.define(version: 2021_11_20_185448) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "lane_id"
     t.index ["board_id"], name: "index_lists_on_board_id"
+  end
+
+  create_table "task_assignments", force: :cascade do |t|
+    t.bigint "task_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["task_id"], name: "index_task_assignments_on_task_id"
+    t.index ["user_id"], name: "index_task_assignments_on_user_id"
   end
 
   create_table "task_histories", force: :cascade do |t|
@@ -73,6 +86,8 @@ ActiveRecord::Schema.define(version: 2021_11_20_185448) do
     t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "first_name"
+    t.string "last_name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -82,6 +97,7 @@ ActiveRecord::Schema.define(version: 2021_11_20_185448) do
     t.bigint "workspace_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "can_add_boards", default: false
     t.index ["user_id"], name: "index_workspace_rights_on_user_id"
     t.index ["workspace_id"], name: "index_workspace_rights_on_workspace_id"
   end
@@ -90,12 +106,16 @@ ActiveRecord::Schema.define(version: 2021_11_20_185448) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_workspaces_on_user_id"
   end
 
   add_foreign_key "board_rights", "boards"
   add_foreign_key "board_rights", "users"
   add_foreign_key "boards", "workspaces"
   add_foreign_key "lists", "boards"
+  add_foreign_key "task_assignments", "tasks"
+  add_foreign_key "task_assignments", "users"
   add_foreign_key "task_histories", "tasks"
   add_foreign_key "task_histories", "users"
   add_foreign_key "tasks", "lists"

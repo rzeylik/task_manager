@@ -46,8 +46,8 @@ module Api
           tasks.update_all('position = (position + 1)')
         end
       else
-        from_list = List.find_by_lane_id from_lane_id
-        to_list = List.find_by_lane_id to_lane_id
+        from_list = List.includes(:tasks).find_by_lane_id(from_lane_id)
+        to_list = List.includes(:tasks).find_by_lane_id(to_lane_id)
 
         tasks = from_list.tasks.where('position > ?', from)
         tasks.update_all('position = (position - 1)')
@@ -84,6 +84,20 @@ module Api
       assignment = TaskAssignment.new(task: task, user: current_user)
       assignment.save
       history_on_join(assignment)
+      Pusher.trigger("task-channel-#{task.card_id}", 'task-update',
+                     TaskBlueprint.render_as_hash(task, view: :with_history))
+    end
+
+    def leave
+      task = Task.find_by_card_id params[:id]
+      assignment = TaskAssignment.where(task: task, user: current_user).first
+
+      if assignment
+        assignment.destroy
+        history_on_leave(assignment)
+        Pusher.trigger("task-channel-#{task.card_id}", 'task-update',
+                       TaskBlueprint.render_as_hash(task, view: :with_history))
+      end
     end
 
     def assign_user
@@ -93,6 +107,8 @@ module Api
       task = Task.find_by_card_id params[:id]
       task.update(task_params)
       update_history(task)
+      Pusher.trigger("task-channel-#{task.card_id}", 'task-update',
+                     TaskBlueprint.render_as_hash(task, view: :with_history))
     end
 
     def destroy
@@ -113,8 +129,7 @@ module Api
     # fix due_to if nil
     def update_history(task)
       TaskHistory.create(user: current_user, task: task, action: "set due to date to #{task.due_to.strftime('%d/%m/%Y %H:%M')}") if (task_params[:due_to])
-      TaskHistory.create(user: current_user, task: task, action: 'removed due to date') if (task_params[:due_to] === nil)
-
+      TaskHistory.create(user: current_user, task: task, action: 'removed due to date') if (task_params[:due_to] === nil && task_params.key?(:due_to))
     end
 
     def history_on_create(task)
@@ -127,6 +142,10 @@ module Api
 
     def history_on_join(task_assignment)
       TaskHistory.create(user: task_assignment.user, task: task_assignment.task, action: 'joined this card')
+    end
+
+    def history_on_leave(task_assignment)
+      TaskHistory.create(user: task_assignment.user, task: task_assignment.task, action: 'left this card')
     end
 
     def task_params

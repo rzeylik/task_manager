@@ -6,11 +6,13 @@ const WorkspacesIndex = (props) => {
     const [workspaces, setWorkspaces] = useState([])
 
     useEffect(() => {
-        fetch('/api/workspaces').then(response => response.json()).then(data => { setWorkspaces(data); console.log(data)})
+        fetch('/api/workspaces').then(response => response.json()).then(data => { setWorkspaces(data);})
     }, [])
 
     return (
         <Container sx={{paddingTop: '20px', paddingBottom: '20px', flexGrow: '1'}}>
+            Your workspaces
+
             { workspaces.map((w, index) => (
                 <h2 key={index}>{w.name}</h2>
             ))}
