@@ -86,6 +86,9 @@ module Api
       history_on_join(assignment)
       Pusher.trigger("task-channel-#{task.card_id}", 'task-update',
                      TaskBlueprint.render_as_hash(task, view: :with_history))
+      Pusher.trigger("board-channel-#{task.board.id}", 'lanes-event',
+                     ListBlueprint.render_as_hash(task.board.lists, view: :pusher),
+                     { socket_id: params[:socket_id] })
     end
 
     def leave
@@ -97,10 +100,64 @@ module Api
         history_on_leave(assignment)
         Pusher.trigger("task-channel-#{task.card_id}", 'task-update',
                        TaskBlueprint.render_as_hash(task, view: :with_history))
+        Pusher.trigger("board-channel-#{task.board.id}", 'lanes-event',
+                       ListBlueprint.render_as_hash(task.board.lists, view: :pusher),
+                       { socket_id: params[:socket_id] })
       end
     end
 
     def assign_user
+      task = Task.find_by_card_id params[:id]
+      user = User.find params[:user_id]
+
+      return if TaskAssignment.where(task: task, user: user).any?
+
+      assignment = TaskAssignment.new(task: task, user: user)
+      assignment.save
+      history_on_join(assignment)
+      Pusher.trigger("task-channel-#{task.card_id}", 'task-update',
+                     TaskBlueprint.render_as_hash(task, view: :with_history))
+      Pusher.trigger("board-channel-#{task.board.id}", 'lanes-event',
+                     ListBlueprint.render_as_hash(task.board.lists, view: :pusher),
+                     { socket_id: params[:socket_id] })
+    end
+
+    def unassign_user
+      task = Task.find_by_card_id params[:id]
+      user = User.find params[:user_id]
+
+      assignment = TaskAssignment.where(task: task, user: user).first
+      if assignment
+        assignment.destroy
+        history_on_leave(assignment)
+        Pusher.trigger("task-channel-#{task.card_id}", 'task-update',
+                       TaskBlueprint.render_as_hash(task, view: :with_history))
+        Pusher.trigger("board-channel-#{task.board.id}", 'lanes-event',
+                       ListBlueprint.render_as_hash(task.board.lists, view: :pusher),
+                       { socket_id: params[:socket_id] })
+      end
+    end
+
+    def attach_file
+      task = Task.find_by_card_id params[:id]
+
+      return unless task
+
+      attachment = TaskAttachment.new(task: task, attachment: params[:file])
+      attachment.save
+      Pusher.trigger("task-channel-#{task.card_id}", 'task-update',
+                     TaskBlueprint.render_as_hash(task, view: :with_history))
+    end
+
+    def remove_file
+      task = Task.find_by_card_id params[:id]
+
+      return unless task
+
+      attachment = TaskAttachment.find params[:attachment_id]
+      attachment.destroy
+      Pusher.trigger("task-channel-#{task.card_id}", 'task-update',
+                     TaskBlueprint.render_as_hash(task, view: :with_history))
     end
 
     def update
@@ -125,8 +182,6 @@ module Api
 
     private
 
-    # TODO
-    # fix due_to if nil
     def update_history(task)
       TaskHistory.create(user: current_user, task: task, action: "set due to date to #{task.due_to.strftime('%d/%m/%Y %H:%M')}") if (task_params[:due_to])
       TaskHistory.create(user: current_user, task: task, action: 'removed due to date') if (task_params[:due_to] === nil && task_params.key?(:due_to))

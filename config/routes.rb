@@ -5,10 +5,18 @@ Rails.application.routes.draw do
   root 'home#index'
 
   namespace :api do
-    resources :workspaces
+    resources :workspaces do
+      member do
+        post 'add_board'
+        post 'add_user'
+        post 'remove_user'
+      end
+    end
     resources :boards do
       member do
         post 'add_image'
+        post 'add_user'
+        post 'remove_user'
       end
     end
     resources :lists do
@@ -20,11 +28,23 @@ Rails.application.routes.draw do
       member do
         post 'join'
         post 'leave'
+        post 'assign_user'
+        post 'unassign_user'
+        post 'attach_file'
+        post 'remove_file'
         get 'users'
         get 'users_to_assign'
       end
       collection do
         post 'change_position'
+      end
+    end
+
+    resources :task_relations do
+      collection do
+        post 'add_relation'
+        post 'remove_relation'
+        post 'cards_options'
       end
     end
   end

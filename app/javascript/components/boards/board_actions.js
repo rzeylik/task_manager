@@ -17,7 +17,6 @@ export const onCardAdd = (boardId, socketId = null) => {
 
 export const onCardDelete = (boardId, socketId = null) => {
     return (cardId, laneId) => {
-        console.log(socketId)
         const data = {
             card_id: cardId,
             lane_id: laneId,
@@ -77,9 +76,29 @@ export const handleCardDragEnd = (boardId, socketId = null) => {
     }
 }
 
+export const onLaneUpdate = (boardId, socketId) => {
+    return (laneId, data) => {
+        console.log(data)
+        const newData = {
+            board_id: boardId,
+            name: data.title,
+            socket_id: socketId,
+        }
+        post(`/api/lists/${laneId}`, newData, defaultHeaders, 'PUT')
+    }
+}
+
 export const onDataChange = () => {
     return (newData) => {
         console.log(newData)
     }
+}
+
+export const removeUserFromBoard = (boardId, userId) => {
+    return post(`/api/boards/${boardId}/remove_user`, {user_id: userId})
+}
+
+export const destroyBoard = (boardId) => {
+    return post(`/api/boards/${boardId}`, {}, defaultHeaders, 'DELETE')
 }
 

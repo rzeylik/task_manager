@@ -26,6 +26,30 @@ export const leaveFromCard = (cardId) => {
     post(`/api/tasks/${cardId}/leave`, {})
 }
 
+export const addUserToCard = (cardId, userId) => {
+    post(`/api/tasks/${cardId}/assign_user`, { user_id: userId })
+}
+
+export const removeUserFromCard = (cardId, userId) => {
+    post(`/api/tasks/${cardId}/unassign_user`, { user_id: userId })
+}
+
+export const removeAttachment = (cardId, attachmentId) => {
+    post(`/api/tasks/${cardId}/remove_file`, { attachment_id: attachmentId })
+}
+
 export const getUsers = (cardId) => {
     post(`/api/tasks/${cardId}/users`, {})
+}
+
+export const addRelation = (parentId, childId) => {
+    post(`/api/task_relations/add_relation`, {parent_id: parentId, child_id: childId})
+}
+
+export const removeRelation = (parentId, childId) => {
+    post(`/api/task_relations/remove_relation`, {parent_id: parentId, child_id: childId})
+}
+
+export const getRelatedCardsOptions = (cardId) => {
+    return post(`/api/task_relations/cards_options`, { card_id: cardId })
 }

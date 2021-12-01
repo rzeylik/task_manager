@@ -1,6 +1,6 @@
 class Api::ListsController < ApplicationController
-  before_action :set_board, only: [:create, :change_position, :destroy]
-  after_action :lanes_pusher, only: [:destroy, :change_position]
+  before_action :set_board, only: [:create, :change_position, :destroy, :update]
+  after_action :lanes_pusher, only: [:destroy, :change_position, :update]
 
   def create
     list = List.new(list_params)
@@ -16,6 +16,11 @@ class Api::ListsController < ApplicationController
     else
       head 422
     end
+  end
+
+  def update
+    list = List.find_by_lane_id params[:id]
+    list.update(list_params)
   end
 
   def destroy

@@ -8,7 +8,7 @@ const BoardIndexCard = (props) => {
 
     return (
         <>
-            <a href={`/boards/${board.id}`} className={'board-index-card'}>
+            <a href={`/boards/${board.id}`} className={'board-index-card'} style={{backgroundImage: `url('${board.image}')`}}>
                 <h4>{board.name}</h4>
             </a>
         </>

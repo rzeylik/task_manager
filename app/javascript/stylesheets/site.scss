@@ -12,10 +12,10 @@
 
 .react-trello-board {
   background-image: url("../images/cat.gif");
+  //background-color: #edf2f9 !important;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  //background-size: 50px;
   height: calc(100vh - 112px) !important;
   width: 100%;
 }
@@ -52,17 +52,19 @@
   justify-content: flex-start;
   align-items: flex-start;
   padding: 15px;
-  width: 300px;
+  width: 265px;
   height: 125px;
   border-radius: 10px;
-  background-image: url("../images/cat.gif");
   background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  margin: 0 10px;
+  background: rgb(245, 245, 245) no-repeat center;
+  margin: 5px 10px;
+
 
   h4 {
     margin: 0;
+    background: rgba(white, 0.5);
+    border-radius: 5px;
+    padding: 3px 10px;
   }
 }
 
@@ -80,6 +82,33 @@
 }
 
 .board-sidebar {
-  max-width: 300px;
+  padding: 12px;
+  max-width: 350px;
   width: 100%;
+  background: #f0f9fd;
+  transition: 0.5s ease;
+  overflow-y: auto;
+  height: calc(100vh - 112px) !important;
+}
+
+.card-attachment {
+  background: #091e420a;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  a {
+    color: black;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  i {
+    cursor: pointer;
+  }
 }

@@ -7,12 +7,13 @@ const UserCircle = (props) => {
         user,
         className,
         withTooltip,
-        onclick
+        onclick,
+        size
     } = props
 
     return (
         <Tooltip title={withTooltip ? `${user?.last_name} ${user?.first_name}, ${user?.email}` : ''} zIndex={1500}>
-            <div onClick={() => {onclick()}} className={`user-circle ${className}`}>
+            <div style={{width: `${size}px`, height: `${size}px`}} onClick={() => {onclick()}} className={`user-circle ${className}`}>
                 {user?.last_name?.charAt(0)}{user?.first_name?.charAt(0)}
             </div>
         </Tooltip>
@@ -29,6 +30,7 @@ UserCircle.propTypes = {
 
 UserCircle.defaultProps = {
     withTooltip: true,
+    size: 40,
     onclick: () => {}
 }
 

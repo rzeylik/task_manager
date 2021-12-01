@@ -10,6 +10,14 @@ class User < ApplicationRecord
   has_many :board_rights
   has_many :boards, through: :board_rights
 
+  def own_workspaces
+    workspaces.where(owner: self)
+  end
+
+  def invited_workspaces
+    workspaces.where.not(owner: self)
+  end
+
   def all_boards
     all_boards = []
     workspaces.each do |w|

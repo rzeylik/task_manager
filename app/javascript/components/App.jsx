@@ -10,6 +10,7 @@ import Footer from "./layout/Footer";
 import BoardsIndex from "./boards/Index";
 import BoardsShow from "./boards/Show";
 import Pusher from "pusher-js";
+import WorkspaceEdit from "./workspaces/WorkspaceEdit";
 
 window.pusher = new Pusher('17df5d5417699077228b', {
     cluster: 'eu'
@@ -25,9 +26,8 @@ const App = (props) => {
             <div className="site">
                 <Header isLoggedIn={!!props.user} user={props.user} />
                     <Routes>
-                        <Route path="/" element={<HomeIndex />} />
-                        <Route path="workspaces" element={<WorkspacesIndex />} />
-                        <Route path="boards" element={<BoardsIndex />} />
+                        <Route path="/" element={<WorkspacesIndex />} />
+                        <Route path="workspaces/:id/edit" element={<WorkspaceEdit />} />
                         <Route path="boards/:id" element={<BoardsShow />} />
                         <Route path={"*"} element={<NotFound />} />
                     </Routes>

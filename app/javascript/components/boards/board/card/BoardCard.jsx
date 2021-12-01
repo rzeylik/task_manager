@@ -11,9 +11,11 @@ import {
 } from 'react-trello/dist/styles/Base'
 import Tag from 'react-trello/dist/components/Card/Tag'
 import CardModal from "./CardModal";
+import UserCircle from "../../../users/UserCircle";
 
 const BoardCard = (props) => {
     const {
+        assignments,
         showDeleteButton,
         style,
         tagStyle,
@@ -46,10 +48,6 @@ const BoardCard = (props) => {
         e.stopPropagation()
     }
 
-    // const updateCard = (card) => {
-    //     onChange({...card, id})
-    // }
-
     return (
         <div>
             <MovableCardWrapper
@@ -61,13 +59,13 @@ const BoardCard = (props) => {
                 <Detail>
                     {title}
                 </Detail>
-                {tags && tags.length> 0 && (
+                {
+                    assignments.length !== 0 &&
                     <Footer>
-                        {tags.map(tag => (
-                            <Tag key={tag.title} {...tag} tagStyle={tagStyle} />
-                        ))}
+                        { assignments.map((assignment) => <UserCircle key={assignment.id} size={30} user={assignment.user} className={'ms-1'} />) }
                     </Footer>
-                )}
+                }
+
             </MovableCardWrapper>
             <CardModal onDelete={props.onDelete} open={modalOpen} onClose={handleModalClose} id={id} />
         </div>
@@ -100,7 +98,8 @@ BoardCard.defaultProps = {
     description: '',
     label: '',
     tags: [],
-    className: ''
+    className: '',
+    assignments: []
 }
 
 export default BoardCard

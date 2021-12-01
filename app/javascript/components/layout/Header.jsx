@@ -11,8 +11,6 @@ const Header = (props) => {
                 <Box sx={{flexGrow: 1}}>
                     <Typography variant="body1" color="white" component="div">
                         <Link className={'header-link'} to={'/'}>Home</Link>
-                        <Link className={'header-link'} to={'/workspaces'}>Workspaces</Link>
-                        <Link className={'header-link'} to={'/boards'}>Boards</Link>
                     </Typography>
                 </Box>
                 <div className={'d-flex'}>

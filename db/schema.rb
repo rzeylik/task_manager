@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_28_163015) do
+ActiveRecord::Schema.define(version: 2021_12_01_080727) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,14 @@ ActiveRecord::Schema.define(version: 2021_11_28_163015) do
     t.index ["user_id"], name: "index_task_assignments_on_user_id"
   end
 
+  create_table "task_attachments", force: :cascade do |t|
+    t.string "attachment"
+    t.bigint "task_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["task_id"], name: "index_task_attachments_on_task_id"
+  end
+
   create_table "task_histories", force: :cascade do |t|
     t.bigint "task_id", null: false
     t.bigint "user_id", null: false
@@ -63,6 +71,15 @@ ActiveRecord::Schema.define(version: 2021_11_28_163015) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["task_id"], name: "index_task_histories_on_task_id"
     t.index ["user_id"], name: "index_task_histories_on_user_id"
+  end
+
+  create_table "task_relations", force: :cascade do |t|
+    t.bigint "parent_id", null: false
+    t.bigint "child_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["child_id"], name: "index_task_relations_on_child_id"
+    t.index ["parent_id"], name: "index_task_relations_on_parent_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -116,8 +133,11 @@ ActiveRecord::Schema.define(version: 2021_11_28_163015) do
   add_foreign_key "lists", "boards"
   add_foreign_key "task_assignments", "tasks"
   add_foreign_key "task_assignments", "users"
+  add_foreign_key "task_attachments", "tasks"
   add_foreign_key "task_histories", "tasks"
   add_foreign_key "task_histories", "users"
+  add_foreign_key "task_relations", "tasks", column: "child_id"
+  add_foreign_key "task_relations", "tasks", column: "parent_id"
   add_foreign_key "tasks", "lists"
   add_foreign_key "workspace_rights", "users"
   add_foreign_key "workspace_rights", "workspaces"

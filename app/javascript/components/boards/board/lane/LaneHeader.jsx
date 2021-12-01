@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import InlineInput from 'react-trello/dist/widgets/InlineInput'
 import {Title, LaneHeader, RightContent } from 'react-trello/dist/styles/Base'
-import LaneMenu from 'react-trello/dist/components/Lane/LaneHeader/LaneMenu'
+import LaneMenu from "./LaneMenu";
 
 const LaneHeaderComponent = ({
                                  updateTitle, canAddLanes, onDelete, onDoubleClick, editLaneTitle, label, title, titleStyle, labelStyle, t, laneDraggable
@@ -16,11 +16,6 @@ const LaneHeaderComponent = ({
                     title
                 }
             </Title>
-            {label && (
-                <RightContent>
-                    <span style={labelStyle}>{label}</span>
-                </RightContent>
-            )}
             {canAddLanes && <LaneMenu t={t} onDelete={onDelete}/>}
         </LaneHeader>
     )
