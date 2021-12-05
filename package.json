@@ -25,12 +25,16 @@
     "react-router-dom": "^6.0.1",
     "react-trello": "^2.2.11",
     "react_ujs": "^2.6.1",
-    "turbolinks": "^5.2.0"
+    "turbolinks": "^5.2.0",
+    "uuidv4": "^6.2.12"
   },
   "version": "0.1.0",
   "devDependencies": {
     "@webpack-cli/serve": "^1.6.0",
     "uuid": "^8.3.2",
     "webpack-dev-server": "~3"
+  },
+  "engines": {
+    "node": "14.16.1"
   }
 }

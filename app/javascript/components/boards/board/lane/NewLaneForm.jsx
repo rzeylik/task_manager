@@ -1,15 +1,14 @@
-
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { LaneTitle, NewLaneButtons, Section } from 'react-trello/dist/styles/Base'
 import { AddButton, CancelButton } from 'react-trello/dist/styles/Elements'
 import NewLaneTitleEditor from 'react-trello/dist/widgets/NewLaneTitleEditor'
-import { v1 as uuidv1 } from 'uuid';
+import { uuid } from 'uuidv4';
 
 class NewLane extends Component {
     handleSubmit = () => {
         this.props.onAdd({
-            id: uuidv1(),
+            id: uuid(),
             title: this.getValue()
         })
     }

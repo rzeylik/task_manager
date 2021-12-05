@@ -12,8 +12,6 @@ const CardContent = (props) => {
         data
     } = props
 
-    console.log(data)
-
     return (
         <>
             { data?.due_to &&

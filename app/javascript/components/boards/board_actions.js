@@ -78,7 +78,6 @@ export const handleCardDragEnd = (boardId, socketId = null) => {
 
 export const onLaneUpdate = (boardId, socketId) => {
     return (laneId, data) => {
-        console.log(data)
         const newData = {
             board_id: boardId,
             name: data.title,
@@ -90,7 +89,6 @@ export const onLaneUpdate = (boardId, socketId) => {
 
 export const onDataChange = () => {
     return (newData) => {
-        console.log(newData)
     }
 }
 
