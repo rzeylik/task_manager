@@ -12,14 +12,11 @@ import BoardsShow from "./boards/Show";
 import Pusher from "pusher-js";
 import WorkspaceEdit from "./workspaces/WorkspaceEdit";
 
-window.pusher = new Pusher('17df5d5417699077228b', {
-    cluster: 'eu'
-});
-
-
-
 const App = (props) => {
     window.current_user = props.user;
+    window.pusher = new Pusher(props.pusher_key, {
+        cluster: 'eu'
+    });
 
     return (
         <BrowserRouter>
@@ -38,6 +35,7 @@ const App = (props) => {
 }
 
 App.propTypes = {
-    user: PropTypes.object
+    user: PropTypes.object,
+    pusher_key: PropTypes.string
 };
 export default App

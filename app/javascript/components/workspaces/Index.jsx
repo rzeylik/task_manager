@@ -11,7 +11,7 @@ const WorkspacesIndex = (props) => {
     const [boards, setBoards] = useState([])
 
     useEffect(() => {
-        fetch('/api/workspaces').then(response => response.json()).then(data => { console.log(data); setOwnWorkspaces(data.own_workspaces); setInvitedWorkspaces(data.invited_workspaces); setBoards(data.boards)})
+        fetch('/api/workspaces').then(response => response.json()).then(data => { setOwnWorkspaces(data.own_workspaces); setInvitedWorkspaces(data.invited_workspaces); setBoards(data.boards)})
     }, [])
 
     return (

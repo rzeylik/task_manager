@@ -15,6 +15,6 @@
   </head>
 
   <body>
-    <%= react_component('App', user: current_user) %>
+    <%= react_component('App', user: current_user, pusher_key: ENV['PUSHER_KEY']) %>
   </body>
 </html>
