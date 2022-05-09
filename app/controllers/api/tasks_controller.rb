@@ -17,7 +17,7 @@ module Api
 
       task.list = list
       if task.save
-        render json: task
+        render json: task, status: 201
         history_on_create(task)
         Pusher.trigger("board-channel-#{params[:board_id]}", 'create-card-event', TaskBlueprint.render_as_hash(task, view: :pusher), { socket_id: params[:socket_id] })
       else
