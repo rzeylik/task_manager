@@ -22,12 +22,12 @@ const App = (props) => {
         <BrowserRouter>
             <div className="site">
                 <Header isLoggedIn={!!props.user} user={props.user} />
-                    <Routes>
-                        <Route path="/" element={<WorkspacesIndex />} />
-                        <Route path="workspaces/:id/edit" element={<WorkspaceEdit />} />
-                        <Route path="boards/:id" element={<BoardsShow />} />
-                        <Route path={"*"} element={<NotFound />} />
-                    </Routes>
+                <Routes>
+                    <Route path="/" element={<WorkspacesIndex />} />
+                    <Route path="workspaces/:id/edit" element={<WorkspaceEdit />} />
+                    <Route path="boards/:id" element={<BoardsShow />} />
+                    <Route path={"*"} element={<NotFound />} />
+                </Routes>
                 <Footer />
             </div>
         </BrowserRouter>

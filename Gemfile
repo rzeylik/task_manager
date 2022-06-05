@@ -19,6 +19,7 @@ gem 'rails_admin'
 gem 'active_model_serializers'
 gem 'blueprinter'
 gem 'oj'
+gem 'cancancan'
 
 gem 'pusher'
 gem 'carrierwave'

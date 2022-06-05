@@ -6,21 +6,19 @@ import UserCircle from "../users/UserCircle";
 
 const Header = (props) => {
     return (
-        <AppBar position="static">
-            <Toolbar variant="dense">
-                <Box sx={{flexGrow: 1}}>
-                    <Typography variant="body1" color="white" component="div">
-                        <Link className={'header-link'} to={'/'}>Home</Link>
-                    </Typography>
-                </Box>
-                <div className={'d-flex'}>
+        (
+            <header className={'header text-white py-1'}>
+                <div className="flex-grow-1">
+                    <Link className={'header-link'} to={'/'}>Home</Link>
+                </div>
+                <div className={"d-flex"}>
                     { props.isLoggedIn && <Button rel={"nofollow"} data-method={"DELETE"} href={'/users/sign_out'} color="inherit">Sign out</Button> }
                     { props.isLoggedIn && <UserCircle className={'mx-2'} user={props.user} withTooltip={false} /> }
                     { !props.isLoggedIn && <Button href={'/users/sign_in'} color="inherit">Sign in</Button> }
                     { !props.isLoggedIn && <Button href={'/users/sign_up'} color="inherit">Sign up</Button> }
                 </div>
-            </Toolbar>
-        </AppBar>
+            </header>
+        )
     )
 }
 

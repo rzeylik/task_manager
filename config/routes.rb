@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       end
     end
     resources :boards do
+      resources :messages, controller: 'board_messages'
       member do
         post 'add_image'
         post 'add_user'

@@ -22,7 +22,7 @@ const BoardSidebar = (props) => {
     }
 
     return (
-        <div className="board-sidebar" style={{width: `${open ? '350' : '50'}px`}}>
+        <div className={`board-sidebar ${open ? 'open' : 'closed'}`}>
             <div className={'d-flex mb-3'} style={{cursor: 'pointer'}} onClick={changeState}><i className={`fas fa-2x fa-angle-double-${open ? 'right' : 'left'}`} /></div>
 
             <div className={`${open ? '' : 'd-none'}`}>

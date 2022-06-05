@@ -4,6 +4,7 @@ class Board < ApplicationRecord
   has_many :tasks, through: :lists
   has_many :board_rights, dependent: :destroy
   has_many :users, through: :board_rights
+  has_many :messages, class_name: 'BoardMessage'
   belongs_to :owner, foreign_key: :user_id, class_name: 'User'
 
   mount_uploader :image, ImageUploader

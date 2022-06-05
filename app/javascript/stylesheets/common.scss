@@ -1,5 +1,21 @@
+@import "variables";
+
 body {
   background-color: white;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  background: rgba($primary-color, 0.85);
+
+  a:hover {
+    color: inherit;
+  }
+}
+
+.footer {
+  background: rgba($primary-color, 0.85);
 }
 
 .header-link {
@@ -43,4 +59,48 @@ body {
 
 .text-big {
   font-size: 16px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.border-rounded {
+  border-radius: 0.25rem;
+}
+
+.border-color-inherit {
+  border-color: inherit !important;
+}
+
+.full-window {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.outline-none {
+  &.form-control:focus {
+    border-color: #ced4da;
+    box-shadow: none;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.text-right {
+  text-align: right;
 }

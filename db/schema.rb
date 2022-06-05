@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_01_080727) do
+ActiveRecord::Schema.define(version: 2022_05_28_175102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "board_messages", force: :cascade do |t|
+    t.string "text"
+    t.bigint "user_id", null: false
+    t.bigint "board_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["board_id"], name: "index_board_messages_on_board_id"
+    t.index ["user_id"], name: "index_board_messages_on_user_id"
+  end
 
   create_table "board_rights", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -127,6 +137,8 @@ ActiveRecord::Schema.define(version: 2021_12_01_080727) do
     t.index ["user_id"], name: "index_workspaces_on_user_id"
   end
 
+  add_foreign_key "board_messages", "boards"
+  add_foreign_key "board_messages", "users"
   add_foreign_key "board_rights", "boards"
   add_foreign_key "board_rights", "users"
   add_foreign_key "boards", "workspaces"

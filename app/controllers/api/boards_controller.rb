@@ -53,6 +53,6 @@ class Api::BoardsController < ApplicationController
   end
 
   def user_have_access?
-    head 403 and return unless current_user.all_boards.include?(@board)
+    head 403 unless current_user.all_boards.include?(@board)
   end
 end

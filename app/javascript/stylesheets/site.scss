@@ -1,6 +1,7 @@
 @import "~bootstrap/scss/bootstrap";
 @import "~antd/dist/antd";
 
+@import "variables";
 @import "common";
 
 .newCardTitleInputWrapper div {
@@ -11,13 +12,17 @@
 }
 
 .react-trello-board {
-  background-image: url("../images/cat.gif");
+  background: none !important;
   //background-color: #edf2f9 !important;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  height: calc(100vh - 112px) !important;
+  //background-repeat: no-repeat;
+  //background-size: cover;
+  //background-position: center;
+  height: calc(100vh - #{$footer-height} - #{$header-height} - #{$toolbar-height}) !important;
   width: 100%;
+}
+
+.react-trello-lane > div {
+  max-height: calc(100vh - #{$footer-height} - #{$header-height} - #{$toolbar-height} - 75px);
 }
 
 .card-dialog-actions {
@@ -69,6 +74,7 @@
 }
 
 .user-circle {
+  --size: 40px;
   font-weight: 700;
   cursor: pointer;
   display: flex;
@@ -76,8 +82,9 @@
   align-items: center;
   background: rgba(black, 0.1);
   text-align: center;
-  width: 40px;
-  height: 40px;
+  width: var(--size);
+  min-width: var(--size);
+  height: var(--size);
   border-radius: 50%;
 }
 
@@ -85,10 +92,19 @@
   padding: 12px;
   max-width: 350px;
   width: 100%;
-  background: #f0f9fd;
+  background: rgba(#f0f9fd, 0.85);
   transition: 0.5s ease;
   overflow-y: auto;
-  height: calc(100vh - 112px) !important;
+  height: calc(100vh - #{$footer-height} - #{$header-height}) !important;
+
+  &.open {
+    width: 350px;
+    //min-width: 350px;
+  }
+
+  &.closed {
+    width: 50px;
+  }
 }
 
 .card-attachment {
@@ -110,5 +126,95 @@
 
   i {
     cursor: pointer;
+  }
+}
+
+.chat {
+  z-index: 3;
+  pointer-events: auto;
+
+  .chat-message {
+    position: relative;
+
+    &.my {
+      justify-content: flex-end;
+      .user-circle {
+        order: 1;
+        margin-right: 0;
+        margin-left: 0.5rem;
+      }
+
+      .message-text {
+        text-align: left;
+
+        &::before {
+          left: 100%;
+          right: 0;
+          transform: translateX(0px);
+          border-width: 6px 0 6px 6px;
+          border-color: transparent transparent transparent #cad5ef;
+        }
+      }
+    }
+
+    .user-circle {
+      margin-right: 0.5rem;
+    }
+
+    .message-text {
+      text-align: right;
+      position: relative;
+      background: #cad5ef;
+      padding: 5px 8px 10px 5px;
+      border-radius: 5px;
+      min-width: 40px;
+
+      &::before {
+        position: absolute;
+        content: '';
+        right: 100%;
+        top: 8px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 6px 6px 6px 0;
+        border-color: transparent #cad5ef transparent transparent;
+      }
+
+      .message-time {
+        position: absolute;
+        right: 5px;
+        bottom: 0;
+        font-size: 9px;
+      }
+    }
+  }
+}
+
+.board-toolbar {
+  &.board-toolbar-white {
+    color: #fff;
+    border-color: #fff;
+
+    .toolbar-color-reverse {
+      color: #000;
+    }
+
+    .toolbar-bg {
+      background-color: #fff;
+    }
+  }
+
+  &.board-toolbar-black {
+    color: #000;
+    border-color: #000;
+
+    .toolbar-color-reverse {
+      color: #fff;
+    }
+
+    .toolbar-bg {
+      background-color: #000;
+    }
   }
 }
