@@ -8,7 +8,8 @@ const CardActionsMember = (props) => {
         cardId,
         user,
         remove,
-        closePopup
+        closePopup,
+        editable
     } = props
 
     const [visible, setVisible] = useState(false)
@@ -27,7 +28,6 @@ const CardActionsMember = (props) => {
         removeUserFromCard(cardId, user.id)
 
         setVisible(false)
-        // closePopup()
     }
 
     const content = (
@@ -41,7 +41,7 @@ const CardActionsMember = (props) => {
             content={content}
             trigger={"click"}
             placement={'bottom'}
-            visible={visible}
+            visible={editable ? visible : false}
             onVisibleChange={handleVisibleChange}
             zIndex={1500}
         >

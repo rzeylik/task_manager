@@ -17,9 +17,11 @@ Rails.application.routes.draw do
     resources :boards do
       resources :messages, controller: 'board_messages'
       member do
+        get 'settings'
         post 'add_image'
         post 'add_user'
         post 'remove_user'
+        get 'permissions'
       end
     end
     resources :lists do
@@ -50,6 +52,8 @@ Rails.application.routes.draw do
         post 'cards_options'
       end
     end
+
+    resources :board_rights, only: [:update]
   end
 
   get '*path', to: 'home#index'

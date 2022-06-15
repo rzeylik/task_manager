@@ -4,12 +4,17 @@ class Api::BoardMessagesController < ApplicationController
     authorize! :read, board
     last_message_id = params[:last_message_id]
     if last_message_id.present?
-      messages = board.messages.order(:id).where('id < ?', last_message_id).last(10)
+      messages = board.messages.includes(:user).order(:id).where('id < ?', last_message_id).last(15)
     else
-      messages = board.messages.includes(:user).order(:id).last(10)
+      messages = board.messages.includes(:user).order(:id).last(15)
     end
 
-    render json: BoardMessageBlueprint.render(messages, view: :with_user)
+    response = {
+      data: BoardMessageBlueprint.render_as_hash(messages, view: :with_user),
+      is_last: messages.first&.id == board.messages.first&.id
+    }
+
+    render json: response
   end
 
   def create

@@ -13,10 +13,12 @@ const CardDescription = (props) => {
     }, [props.description])
 
     const {
-        cardId
+        cardId,
+        editable
     } = props
 
     const enableEditMode = () => {
+        if (!editable) { return false }
         setEditMode(true)
         document.getElementById('card-description-edit').focus()
     }
@@ -43,7 +45,7 @@ const CardDescription = (props) => {
                 {
                     description ||
                     <div className={'fake-textarea'}>
-                        Add some description here...
+                        { editable ? "Add some description here..." : "There's no description yet" }
                     </div>
                 }
             </div>
@@ -62,7 +64,8 @@ const CardDescription = (props) => {
 
 CardDescription.propTypes = {
     cardId: PropTypes.string,
-    description: PropTypes.string
+    description: PropTypes.string,
+    editable: PropTypes.bool
 }
 
 export default CardDescription

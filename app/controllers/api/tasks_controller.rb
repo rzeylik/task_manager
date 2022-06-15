@@ -2,12 +2,18 @@ module Api
   class TasksController < ApplicationController
     def show
       task = Task.find_by_card_id params[:id]
+
+      authorize! :read, task
+
       render json: TaskBlueprint.render(task, view: :with_history)
     end
 
     def create
       list = List.find_by_lane_id params[:lane_id]
       task = Task.new(task_params)
+      task.list = list
+
+      authorize! :create, task
 
       if list.tasks.any?
         task.position = list.tasks.last.position + 1
@@ -15,7 +21,6 @@ module Api
         task.position = 0
       end
 
-      task.list = list
       if task.save
         render json: task, status: 201
         history_on_create(task)
@@ -28,6 +33,7 @@ module Api
     def change_position
       board = Board.find params[:board_id]
       task = Task.find_by_card_id params[:task_id]
+      authorize! :move, task
 
       from_lane_id = params[:from_lane_id]
       to_lane_id = params[:to_lane_id]
@@ -68,16 +74,21 @@ module Api
 
     def users
       task = Task.find_by_card_id params[:id]
+      authorize! :read, task
+
       render json: task.board.all_users
     end
 
     def users_to_assign
       task = Task.find_by_card_id params[:id]
+      authorize! :read, task
+
       render json: task.board.all_users - task.users
     end
 
     def join
       task = Task.find_by_card_id params[:id]
+      authorize! :update, task
 
       return if TaskAssignment.where(task: task, user: current_user).any?
 
@@ -93,6 +104,8 @@ module Api
 
     def leave
       task = Task.find_by_card_id params[:id]
+      authorize! :update, task
+
       assignment = TaskAssignment.where(task: task, user: current_user).first
 
       if assignment
@@ -109,6 +122,7 @@ module Api
     def assign_user
       task = Task.find_by_card_id params[:id]
       user = User.find params[:user_id]
+      authorize! :update, task
 
       return if TaskAssignment.where(task: task, user: user).any?
 
@@ -125,6 +139,7 @@ module Api
     def unassign_user
       task = Task.find_by_card_id params[:id]
       user = User.find params[:user_id]
+      authorize! :update, task
 
       assignment = TaskAssignment.where(task: task, user: user).first
       if assignment
@@ -140,6 +155,7 @@ module Api
 
     def attach_file
       task = Task.find_by_card_id params[:id]
+      authorize! :update, task
 
       return unless task
 
@@ -151,6 +167,7 @@ module Api
 
     def remove_file
       task = Task.find_by_card_id params[:id]
+      authorize! :update, task
 
       return unless task
 
@@ -162,6 +179,8 @@ module Api
 
     def update
       task = Task.find_by_card_id params[:id]
+      authorize! :update, task
+
       task.update(task_params)
       update_history(task)
       Pusher.trigger("task-channel-#{task.card_id}", 'task-update',
@@ -170,6 +189,8 @@ module Api
 
     def destroy
       task = Task.find_by_card_id params[:card_id]
+      authorize! :destroy, task
+
       from_list = task.list
 
       tasks = from_list.tasks.where('position > ?', task.position)

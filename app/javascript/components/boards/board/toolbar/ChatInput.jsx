@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {addMessage} from "../../messages_actions";
-import {useParams} from "react-router-dom";
 
 const ChatInput = ({boardId, messages, setMessages, socketId, scrollToBottom}) => {
     const [message, setMessage] = useState('')
 
     const sendMessage = () => {
-        addMessage(message, boardId, socketId).then((message) => {
+        if ((message).trim().length <= 0) return
+        addMessage(message.trim(), boardId, socketId).then((message) => {
             setMessages([...messages, message])
             scrollToBottom()
         })

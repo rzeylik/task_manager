@@ -7,7 +7,8 @@ import {removeRelation} from "../card_actions";
 const RelatedCard = (props) => {
     const {
         relatedCard,
-        cardId
+        cardId,
+        editable
     } = props
 
     const [modalOpen, setModalOpen] = useState(false)
@@ -26,14 +27,17 @@ const RelatedCard = (props) => {
 
     return (
         <>
-            <div className="mx-1" style={{width: '32%'}}>
+            <div className="col-md-4 col-sm-6 mx-1">
                 <MovableCardWrapper
                     style={{backgroundColor: '#f3f3f3', borderBottom: 0, cursor: 'auto', minWidth: 'auto'}}
                 >
                     <Detail>
                         <div className="d-flex w-100 justify-content-between align-items-center">
                             <span className={'text-normal'}>{relatedCard.title}</span>
-                            <i title={'Remove related task?'} onClick={removeRelatedTask} className="fas fa-md fa-trash-alt" style={{cursor: 'pointer'}} />
+                            { editable && (
+                                <i title={'Remove related task?'} onClick={removeRelatedTask} className="fas fa-md fa-trash-alt" style={{cursor: 'pointer'}} />
+                            )}
+
                         </div>
                     </Detail>
                     <Footer>

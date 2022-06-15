@@ -8,14 +8,16 @@ import ChatInput from "./ChatInput";
 const BoardChat = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [messages, setMessages] = useState([])
+    const [haveLastMessage, setHaveLastMessage] = useState(false)
     const [socketId, setSocketId] = useState(null)
     const [unreadMessages, setUnreadMessages] = useState(0)
     const chatMessages = useRef()
     let { id } = useParams();
 
     useEffect(() => {
-        getMessages(id).then(data => {
-            setMessages(data)
+        getMessages(id).then(messages => {
+            setMessages(messages.data)
+            setHaveLastMessage(messages.is_last)
         })
         const pusher = window.pusher
         pusher.connection.bind("connected", () => {
@@ -44,7 +46,8 @@ const BoardChat = () => {
     const loadOlderMessages = () => {
         const firstMessageId = messages[0].id
         getMessages(id, firstMessageId).then(oldMessages => {
-            setMessages([...oldMessages, ...messages])
+            setMessages([...oldMessages.data, ...messages])
+            setHaveLastMessage(oldMessages.is_last)
             const message = document.querySelector(`.chat-message[data-message-id='${firstMessageId}']`)
             message.scrollIntoView()
         })
@@ -70,13 +73,17 @@ const BoardChat = () => {
                     <div className="chat card" style={{width: '300px', height: '400px', color: '#000'}}>
                         <div className="card-header chat-header d-flex justify-content-between align-items-center">
                             <div>Chat</div>
-                            <div className="fas fa-times text-big cursor-pointer" onClick={() => { setIsOpen(false) }}></div>
+                            <div className="text-big cursor-pointer" onClick={() => { setIsOpen(false) }}>
+                                <i className={'fas fa-times'}></i>
+                            </div>
                         </div>
                         <div className="card-body d-flex flex-column" style={{maxHeight: '360px'}}>
                             <div ref={chatMessages} className="chat-messages overflow-y-auto mb-2 h-100">
-                                <div onClick={loadOlderMessages} className="text-center text-primary cursor-pointer">
-                                    See older messages?
-                                </div>
+                                { !haveLastMessage && (
+                                    <div onClick={loadOlderMessages} className="text-center text-primary cursor-pointer">
+                                        See older messages?
+                                    </div>
+                                )}
                                 {messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
                             </div>
                             <ChatInput boardId={id} messages={messages} setMessages={setMessages} socketId={socketId} scrollToBottom={scrollToBottom} />

@@ -13,7 +13,7 @@ const Header = (props) => {
                 </div>
                 <div className={"d-flex"}>
                     { props.isLoggedIn && <Button rel={"nofollow"} data-method={"DELETE"} href={'/users/sign_out'} color="inherit">Sign out</Button> }
-                    { props.isLoggedIn && <UserCircle className={'mx-2'} user={props.user} withTooltip={false} /> }
+                    { props.isLoggedIn && <UserCircle size={35} className={'mx-2'} user={props.user} withTooltip={false} /> }
                     { !props.isLoggedIn && <Button href={'/users/sign_in'} color="inherit">Sign in</Button> }
                     { !props.isLoggedIn && <Button href={'/users/sign_up'} color="inherit">Sign up</Button> }
                 </div>

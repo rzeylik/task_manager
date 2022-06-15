@@ -8,7 +8,14 @@ class BoardBlueprint < Blueprinter::Base
     board.image.url
   end
 
-  view :with_lists do
+  field :workspace do |board|
+    {
+      id: board.workspace.id,
+      name: board.workspace.name
+    }
+  end
+
+  view :with_lists_and_users do
     association :lists, name: :lanes, blueprint: ListBlueprint, view: :show
     field :users do |board|
       {
@@ -16,7 +23,15 @@ class BoardBlueprint < Blueprinter::Base
         board_users: UserBlueprint.render_as_hash(board.users),
         workspace_users: UserBlueprint.render_as_hash(board.workspace.users)
       }
-      # UserBlueprint.render_as_hash(board.all_users)
+    end
+  end
+
+  view :with_users do
+    field :users do |board|
+      {
+        board_users: BoardRightBlueprint.render_as_hash(board.board_rights, view: :with_user),
+        workspace_users: UserBlueprint.render_as_hash(board.workspace.users)
+      }
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_28_175102) do
+ActiveRecord::Schema.define(version: 2022_06_07_201227) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,7 +30,11 @@ ActiveRecord::Schema.define(version: 2022_05_28_175102) do
     t.bigint "board_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "can_edit", default: true
+    t.boolean "can_edit_tasks", default: true
+    t.boolean "can_edit_lists", default: false
+    t.boolean "can_move_tasks", default: false
+    t.boolean "can_move_lists", default: false
+    t.boolean "is_admin", default: false
     t.index ["board_id"], name: "index_board_rights_on_board_id"
     t.index ["user_id"], name: "index_board_rights_on_user_id"
   end

@@ -24,39 +24,39 @@ const fac = new FastAverageColor()
 
 const BoardsShow = (props) => {
     let eventBus = undefined
-    const setEventBus = (handle) => {
-        eventBus = handle
-    }
+    const setEventBus = (handle) => { eventBus = handle }
 
     const [socketId, setSocketId] = useState(null)
     const [imageUrl, setImageUrl] = useState('')
     const [users, setUsers] = useState([])
-    const [isOwner, setIsOwner] = useState(false)
     const [toolbarColor, setToolbarColor] = useState('#000')
-    const [lanes, setLanes] = useState({
-        lanes: []
-    })
+    const [workspace, setWorkspace] = useState({ id: null, name: ''})
+    const [board, setBoard] = useState({ id: null, name: ''})
+    const [lanes, setLanes] = useState({lanes: []})
+    const [permissions, setPermissions] = useState({ can_edit_tasks: false, can_edit_lists: false, can_move_tasks: false, can_move_lists: false, is_admin: false})
     let { id } = useParams();
 
     useEffect(() => {
         fetch(`/api/boards/${id}`).then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                window.location.href = "/";
-            }
+            if (response.ok) { return response.json();
+            } else { window.location.href = "/"; }
         }).then(board => {
+            setBoard({ id: board.id, name: board.name })
             setImageUrl(board.image)
             setLanes({lanes: board.lanes})
+            setWorkspace(board.workspace)
             setUsers(board.users)
-            setIsOwner(board.owner_id === window.current_user.id)
         })
+
+        fetch(`/api/boards/${id}/permissions`).then(response => {
+            if (response.ok) { return response.json();
+            } else { window.location.href = "/"; }
+        }).then(permissions => { setPermissions(permissions) })
 
         const pusher = window.pusher
 
         pusher.connection.bind("connected", () => {
             setSocketId(pusher.connection.socket_id);
-            console.log(pusher.connection.socket_id)
         });
 
         const channel = pusher.subscribe(`board-channel-${id}`);
@@ -101,14 +101,16 @@ const BoardsShow = (props) => {
     return (
         <div className={'d-flex p-relative'}>
             <div className="d-flex flex-column flex-grow-1 overflow-x-auto">
-                <BoardToolbar color={toolbarColor} />
+                <BoardToolbar workspace={workspace} board={board} users={users} color={toolbarColor} permissions={permissions} />
                 <Board data={lanes}
                        eventBusHandle={setEventBus}
                        components={components}
-                       editable={true}
-                       editLaneTitle={true}
-                       canAddLanes={true}
+                       editable={permissions.can_edit_tasks}
+                       canAddLanes={permissions.can_edit_lists}
+                       editLaneTitle={permissions.can_edit_lists}
                        draggable={true}
+                       laneDraggable={permissions.can_move_lists}
+                       cardDraggable={permissions.can_move_tasks}
                        onCardAdd={onCardAdd(id, socketId)}
                        onCardDelete={onCardDelete(id, socketId)}
                        onLaneAdd={onLaneAdd(id, socketId)}
@@ -120,7 +122,7 @@ const BoardsShow = (props) => {
 
                 />
             </div>
-            <BoardSidebar boardId={id} users={users} isOwner={isOwner} lanes={lanes} setLanes={setLanes} />
+            <BoardSidebar boardId={id} users={users} permissions={permissions} lanes={lanes} setLanes={setLanes} />
         </div>
     )
 }
