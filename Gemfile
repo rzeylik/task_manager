@@ -24,11 +24,11 @@ gem 'cancancan'
 gem 'pusher'
 gem 'carrierwave'
 gem 'rswag'
+gem 'rspec-rails'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 
 group :development, :test do
-  gem 'rspec-rails'
   gem 'faker'
   gem 'factory_bot_rails'
   gem 'database_cleaner'
