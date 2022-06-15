@@ -88,8 +88,7 @@ export const onLaneUpdate = (boardId, socketId) => {
 }
 
 export const onDataChange = () => {
-    return (newData) => {
-    }
+    return (newData) => {}
 }
 
 export const removeUserFromBoard = (boardId, userId) => {

@@ -9,6 +9,7 @@ import CardRelatedCards from "./CardRelatedCards";
 
 const CardContent = (props) => {
     const {
+        editable,
         data
     } = props
 
@@ -21,23 +22,23 @@ const CardContent = (props) => {
             }
             { data?.assignments?.length !== 0 &&
                 <div className="mb-2">
-                    <CardAssignments assignments={data.assignments} cardId={data.id} />
+                    <CardAssignments editable={editable} assignments={data.assignments} cardId={data.id} />
                 </div>
             }
             <div className="mb-2">
-                <CardDescription cardId={data.id} description={data.description} />
+                <CardDescription editable={editable} cardId={data.id} description={data.description} />
             </div>
 
             { data?.related_cards?.length !== 0 &&
                 <div className={'mb-2'}>
-                    <CardRelatedCards cardId={data.id} relatedCards={data.related_cards} />
+                    <CardRelatedCards editable={editable} cardId={data.id} relatedCards={data.related_cards} />
                 </div>
             }
 
             {
                 data?.attachments?.length !== 0 &&
                 <div className="mb-2">
-                    <CardAttachments cardId={data.id} attachments={data.attachments} />
+                    <CardAttachments editable={editable} cardId={data.id} attachments={data.attachments} />
                 </div>
             }
             <div className="mb-2">

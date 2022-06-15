@@ -8,4 +8,8 @@ class TaskAttachmentBlueprint < Blueprinter::Base
   field :name do |attachment|
     attachment.attachment.file.filename
   end
+
+  field :type do |attachment|
+    attachment.attachment.file.content_type
+  end
 end

@@ -8,14 +8,15 @@ import CardActionsMember from "../actions/CardActionsMember";
 const CardAssignments = (props) => {
     const {
         cardId,
-        assignments
+        assignments,
+        editable
     } = props
 
     return (
         <>
             <CardContentTitle>User assignments</CardContentTitle>
             <div className="d-flex">
-                { assignments.map(assignment => <CardActionsMember key={assignment.id} user={assignment.user} cardId={cardId} remove={true} />)}
+                { assignments.map(assignment => <CardActionsMember editable={editable} key={assignment.id} user={assignment.user} cardId={cardId} remove={true} />)}
             </div>
         </>
     )
@@ -23,11 +24,13 @@ const CardAssignments = (props) => {
 }
 
 CardAssignments.propTypes = {
-    assignments: PropTypes.array
+    assignments: PropTypes.array,
+    editable: PropTypes.bool
 }
 
 CardAssignments.defaultProps = {
-    assignments: []
+    assignments: [],
+    editable: false
 }
 
 export default CardAssignments

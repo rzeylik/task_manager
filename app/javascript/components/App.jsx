@@ -11,6 +11,7 @@ import BoardsIndex from "./boards/Index";
 import BoardsShow from "./boards/Show";
 import Pusher from "pusher-js";
 import WorkspaceEdit from "./workspaces/WorkspaceEdit";
+import BoardSettings from "./boards/Settings";
 
 const App = (props) => {
     window.current_user = props.user;
@@ -22,12 +23,13 @@ const App = (props) => {
         <BrowserRouter>
             <div className="site">
                 <Header isLoggedIn={!!props.user} user={props.user} />
-                    <Routes>
-                        <Route path="/" element={<WorkspacesIndex />} />
-                        <Route path="workspaces/:id/edit" element={<WorkspaceEdit />} />
-                        <Route path="boards/:id" element={<BoardsShow />} />
-                        <Route path={"*"} element={<NotFound />} />
-                    </Routes>
+                <Routes>
+                    <Route path="/" element={<WorkspacesIndex />} />
+                    <Route path="workspaces/:id/edit" element={<WorkspaceEdit />} />
+                    <Route path="boards/:id" element={<BoardsShow />} />
+                    <Route path="boards/:id/settings" element={<BoardSettings />} />
+                    <Route path={"*"} element={<NotFound />} />
+                </Routes>
                 <Footer />
             </div>
         </BrowserRouter>

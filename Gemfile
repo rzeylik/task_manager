@@ -19,13 +19,19 @@ gem 'rails_admin'
 gem 'active_model_serializers'
 gem 'blueprinter'
 gem 'oj'
+gem 'cancancan'
 
 gem 'pusher'
 gem 'carrierwave'
+gem 'rswag'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 
 group :development, :test do
+  gem 'rspec-rails'
+  gem 'faker'
+  gem 'factory_bot_rails'
+  gem 'database_cleaner'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'dotenv-rails'
 end

@@ -4,12 +4,16 @@ class Api::ListsController < ApplicationController
 
   def create
     list = List.new(list_params)
+    list.board = @board
+
+    authorize! :create, list
+
     if @board.lists.any?
       list.position = @board.lists.last.position + 1
     else
       list.position = 0
     end
-    list.board = @board
+
     if list.save
       head :ok
       lanes_pusher
@@ -20,16 +24,21 @@ class Api::ListsController < ApplicationController
 
   def update
     list = List.find_by_lane_id params[:id]
+    authorize! :update, list
+
     list.update(list_params)
   end
 
   def destroy
     list = List.find_by_lane_id params[:lane_id]
+    authorize! :destroy, list
+
     list.destroy
   end
 
   def change_position
     list = List.find_by_lane_id params[:lane_id]
+    authorize! :move, list
 
     from = list.position
     to = params[:to]

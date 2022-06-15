@@ -67,7 +67,7 @@ const BoardCard = (props) => {
                 }
 
             </MovableCardWrapper>
-            <CardModal onDelete={props.onDelete} open={modalOpen} onClose={handleModalClose} id={id} />
+            <CardModal editable={editable} onDelete={props.onDelete} open={modalOpen} onClose={handleModalClose} id={id} />
         </div>
 
     )

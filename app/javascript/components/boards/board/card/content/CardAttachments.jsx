@@ -6,7 +6,8 @@ import CardAttachment from "./CardAttachment";
 const CardAttachments = (props) => {
     const {
         cardId,
-        attachments
+        attachments,
+        editable
     } = props
 
 
@@ -15,14 +16,15 @@ const CardAttachments = (props) => {
         <>
             <CardContentTitle>Attachments</CardContentTitle>
             <div className="">
-                { attachments.map(attachment => (<CardAttachment key={attachment.id} cardId={cardId} attachment={attachment} />)) }
+                { attachments.map(attachment => (<CardAttachment key={attachment.id} editable={editable} cardId={cardId} attachment={attachment} />)) }
             </div>
         </>
     );
 };
 
 CardAttachments.defaultProps = {
-    attachments: []
+    attachments: [],
+    editable: false
 }
 
 export default CardAttachments;

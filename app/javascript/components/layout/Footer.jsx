@@ -5,15 +5,11 @@ import {Link} from "react-router-dom";
 
 const Footer = (props) => {
     return (
-        <AppBar position="static" color="primary">
-            <Container maxWidth="lg">
-                <Toolbar>
-                    <Typography variant="body1" color="inherit">
-                        © 2021 Softer
-                    </Typography>
-                </Toolbar>
-            </Container>
-        </AppBar>
+        <footer className={'footer w-100 text-white py-2'}>
+            <div className="container mx-auto">
+                © 2021 Softer
+            </div>
+        </footer>
     )
 }
 

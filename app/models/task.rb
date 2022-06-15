@@ -2,7 +2,7 @@ class Task < ApplicationRecord
   belongs_to :list
   has_one :board, through: :list
   has_many :task_histories, -> { order(created_at: :desc) }, dependent: :destroy
-  has_many :task_assignments, dependent: :destroy, dependent: :destroy
+  has_many :task_assignments, dependent: :destroy
   has_many :users, through: :task_assignments
   has_many :task_attachments, dependent: :destroy
   has_many :task_relations, foreign_key: :parent_id, dependent: :destroy

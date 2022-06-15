@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useEffect, useState} from "react"
+import React, {createContext, useContext, useEffect, useLayoutEffect, useState} from "react"
 import PropTypes from "prop-types"
 import Board from 'react-trello'
 import {useParams} from "react-router-dom";
@@ -17,53 +17,41 @@ import NewCardForm from "./board/card/NewCardForm";
 import NewLaneForm from "./board/lane/NewLaneForm";
 import BoardSidebar from "./board/sidebar/BoardSidebar";
 import LaneHeaderComponent from "./board/lane/LaneHeader";
+import FastAverageColor from "fast-average-color";
+import BoardToolbar from "./board/toolbar/BoardToolbar";
+
+const fac = new FastAverageColor()
 
 const BoardsShow = (props) => {
     let eventBus = undefined
-    const setEventBus = (handle) => {
-        eventBus = handle
-    }
+    const setEventBus = (handle) => { eventBus = handle }
 
     const [socketId, setSocketId] = useState(null)
     const [imageUrl, setImageUrl] = useState('')
     const [users, setUsers] = useState([])
-    const [isOwner, setIsOwner] = useState(false)
-    const [lanes, setLanes] = useState({
-        lanes: [
-            {
-                id: 'lane1',
-                title: 'Planned Tasks',
-                label: '2/2',
-                cards: [
-                    {
-                        id: '123',
-                        title: 'Title'
-                    }
-                ]
-            },
-            {
-                id: 'lane2',
-                title: 'Completed',
-                label: '0/0',
-                cards: []
-            }
-        ]
-    })
+    const [toolbarColor, setToolbarColor] = useState('#000')
+    const [workspace, setWorkspace] = useState({ id: null, name: ''})
+    const [board, setBoard] = useState({ id: null, name: ''})
+    const [lanes, setLanes] = useState({lanes: []})
+    const [permissions, setPermissions] = useState({ can_edit_tasks: false, can_edit_lists: false, can_move_tasks: false, can_move_lists: false, is_admin: false})
     let { id } = useParams();
 
     useEffect(() => {
         fetch(`/api/boards/${id}`).then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                window.location.href = "/";
-            }
+            if (response.ok) { return response.json();
+            } else { window.location.href = "/"; }
         }).then(board => {
+            setBoard({ id: board.id, name: board.name })
             setImageUrl(board.image)
             setLanes({lanes: board.lanes})
+            setWorkspace(board.workspace)
             setUsers(board.users)
-            setIsOwner(board.owner_id === window.current_user.id)
         })
+
+        fetch(`/api/boards/${id}/permissions`).then(response => {
+            if (response.ok) { return response.json();
+            } else { window.location.href = "/"; }
+        }).then(permissions => { setPermissions(permissions) })
 
         const pusher = window.pusher
 
@@ -72,7 +60,6 @@ const BoardsShow = (props) => {
         });
 
         const channel = pusher.subscribe(`board-channel-${id}`);
-        setSocketId(channel.socket_id)
         channel.bind('create-card-event', (event) => {
             eventBus.publish({type: 'ADD_CARD', laneId: event.lane_id, card: {id: event.id, title: event.title}})
         });
@@ -91,6 +78,18 @@ const BoardsShow = (props) => {
         }
     }, [])
 
+    useEffect(() => {
+        $('.site').css('background-image', `url('${imageUrl}')`)
+        if (imageUrl) {
+            fac.getColorAsync(imageUrl).then(color => {
+                setToolbarColor(color.isDark ? '#fff': '#000')
+            })
+        }
+    }, [imageUrl])
+
+    useEffect(() => {
+        return () => { $('.site').css('background-image', '')};
+    }, []);
 
     const components = {
         Card: BoardCard,
@@ -101,25 +100,29 @@ const BoardsShow = (props) => {
 
     return (
         <div className={'d-flex p-relative'}>
-            <Board data={lanes}
-                   eventBusHandle={setEventBus}
-                   components={components}
-                   editable={true}
-                   editLaneTitle={true}
-                   canAddLanes={true}
-                   draggable={true}
-                   onCardAdd={onCardAdd(id, socketId)}
-                   onCardDelete={onCardDelete(id, socketId)}
-                   onLaneAdd={onLaneAdd(id, socketId)}
-                   onLaneDelete={onLaneDelete(id, socketId)}
-                   onLaneUpdate={onLaneUpdate(id, socketId)}
-                   handleLaneDragEnd={handleLaneDragEnd(id, socketId)}
-                   handleDragEnd={handleCardDragEnd(id, socketId)}
-                   onDataChange={onDataChange()}
-                   style={{backgroundImage: `url('${imageUrl}')`}}
+            <div className="d-flex flex-column flex-grow-1 overflow-x-auto">
+                <BoardToolbar workspace={workspace} board={board} users={users} color={toolbarColor} permissions={permissions} />
+                <Board data={lanes}
+                       eventBusHandle={setEventBus}
+                       components={components}
+                       editable={permissions.can_edit_tasks}
+                       canAddLanes={permissions.can_edit_lists}
+                       editLaneTitle={permissions.can_edit_lists}
+                       draggable={true}
+                       laneDraggable={permissions.can_move_lists}
+                       cardDraggable={permissions.can_move_tasks}
+                       onCardAdd={onCardAdd(id, socketId)}
+                       onCardDelete={onCardDelete(id, socketId)}
+                       onLaneAdd={onLaneAdd(id, socketId)}
+                       onLaneDelete={onLaneDelete(id, socketId)}
+                       onLaneUpdate={onLaneUpdate(id, socketId)}
+                       handleLaneDragEnd={handleLaneDragEnd(id, socketId)}
+                       handleDragEnd={handleCardDragEnd(id, socketId)}
+                       onDataChange={onDataChange()}
 
-            />
-            <BoardSidebar boardId={id} users={users} isOwner={isOwner} lanes={lanes} setLanes={setLanes} />
+                />
+            </div>
+            <BoardSidebar boardId={id} users={users} permissions={permissions} lanes={lanes} setLanes={setLanes} />
         </div>
     )
 }
