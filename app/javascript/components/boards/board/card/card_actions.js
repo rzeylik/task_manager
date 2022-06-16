@@ -18,6 +18,15 @@ export const updateDueTo = (cardId, dueTo) => {
     post(`/api/tasks/${cardId}`, data, defaultHeaders, 'PATCH')
 }
 
+export const updateColor = (cardId, color) => {
+    const data = {
+        task: {
+            bg_color: color
+        }
+    }
+    post(`/api/tasks/${cardId}`, data, defaultHeaders, 'PATCH')
+}
+
 export const joinToCard = (cardId) => {
     post(`/api/tasks/${cardId}/join`, {})
 }

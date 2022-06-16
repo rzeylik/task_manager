@@ -185,6 +185,9 @@ module Api
       update_history(task)
       Pusher.trigger("task-channel-#{task.card_id}", 'task-update',
                      TaskBlueprint.render_as_hash(task, view: :with_history))
+      Pusher.trigger("board-channel-#{task.board.id}", 'lanes-event',
+                     ListBlueprint.render_as_hash(task.board.lists, view: :pusher),
+                     { socket_id: params[:socket_id] })
     end
 
     def destroy
@@ -225,7 +228,7 @@ module Api
     end
 
     def task_params
-      params.require(:task).permit(:name, :card_id, :description, :due_to)
+      params.require(:task).permit(:name, :card_id, :description, :due_to, :bg_color)
     end
   end
 end

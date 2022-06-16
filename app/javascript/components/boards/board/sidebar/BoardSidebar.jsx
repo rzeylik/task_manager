@@ -1,14 +1,11 @@
 import React, {useState} from 'react';
 import PropTypes from "prop-types"
 import BoardSidebarBackground from "./BoardSidebarBackground";
-import BoardSidebarUsers from "./BoardSidebarUsers";
-import BoardSidebarAddUser from "./BoardSidebarAddUser";
-import BoardSidebarFilter from "./BoardSidebarFilter";
-import BoardDestroy from "./BoardDestroy";
+import BoardSidebarFilters from "./BoardSidebarFilters";
 
 const BoardSidebar = (props) => {
     const {
-        boardId,
+        board,
         users,
         permissions,
         lanes,
@@ -27,9 +24,9 @@ const BoardSidebar = (props) => {
 
             <div className={`${open ? '' : 'd-none'}`}>
                 {/*{ permissions.is_admin && <BoardSidebarAddUser className={'mb-3'} boardId={boardId} /> }*/}
-                <BoardSidebarFilter className={'mb-3'} users={users.all_users} lanes={lanes} setLanes={setLanes} />
-                <BoardSidebarBackground className={'mb-4'} boardId={boardId} />
-                { permissions.is_admin && <BoardDestroy boardId={boardId} /> }
+                <BoardSidebarBackground className={'mb-3'} boardId={board.id} image={board.image} imageMode={board.image_mode} />
+                <BoardSidebarFilters className={'mb-3'} users={users.all_users} lanes={lanes} setLanes={setLanes} />
+                {/*{ permissions.is_admin && <BoardDestroy boardId={boardId} /> }*/}
             </div>
         </div>
     );

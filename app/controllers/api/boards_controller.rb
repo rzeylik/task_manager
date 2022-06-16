@@ -1,5 +1,5 @@
 class Api::BoardsController < ApplicationController
-  before_action :set_board, only: %i[show destroy add_image add_user remove_user settings permissions]
+  before_action :set_board, only: %i[show destroy add_image update_image_mode add_user remove_user settings permissions]
   before_action :user_have_access?, only: [:show]
 
   def index
@@ -22,6 +22,13 @@ class Api::BoardsController < ApplicationController
     authorize! :add_image, @board
 
     @board.image = params[:image]
+    @board.save
+  end
+
+  def update_image_mode
+    authorize! :add_image, @board
+
+    @board.image_mode = params[:image_mode]
     @board.save
   end
 

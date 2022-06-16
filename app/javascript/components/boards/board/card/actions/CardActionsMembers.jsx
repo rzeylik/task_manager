@@ -5,7 +5,8 @@ import CardActionsMember from "./CardActionsMember";
 
 const CardActionsMembers = (props) => {
     const {
-        cardId
+        cardId,
+        editable
     } = props
 
     const [visible, setVisible] = useState(false)
@@ -32,7 +33,7 @@ const CardActionsMembers = (props) => {
                 <div className="mb-2">Assign user: </div>
                 <div className="d-flex flex-wrap">
                     { data.map((member) => (
-                        <CardActionsMember key={member.id} closePopup={closePopup} user={member} cardId={cardId} />
+                        <CardActionsMember key={member.id} editable={editable} closePopup={closePopup} user={member} cardId={cardId} />
                     )) }
                 </div>
             </div>

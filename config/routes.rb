@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       member do
         get 'settings'
         post 'add_image'
+        post 'update_image_mode'
         post 'add_user'
         post 'remove_user'
         get 'permissions'

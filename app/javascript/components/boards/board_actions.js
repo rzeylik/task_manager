@@ -99,3 +99,6 @@ export const destroyBoard = (boardId) => {
     return post(`/api/boards/${boardId}`, {}, defaultHeaders, 'DELETE')
 }
 
+export const updateImageMode = (boardId, imageMode) => {
+    return post(`/api/boards/${boardId}/update_image_mode`, { image_mode: imageMode })
+}

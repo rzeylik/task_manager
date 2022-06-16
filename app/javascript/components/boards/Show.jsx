@@ -27,11 +27,10 @@ const BoardsShow = (props) => {
     const setEventBus = (handle) => { eventBus = handle }
 
     const [socketId, setSocketId] = useState(null)
-    const [imageUrl, setImageUrl] = useState('')
     const [users, setUsers] = useState([])
     const [toolbarColor, setToolbarColor] = useState('#000')
     const [workspace, setWorkspace] = useState({ id: null, name: ''})
-    const [board, setBoard] = useState({ id: null, name: ''})
+    const [board, setBoard] = useState({ id: null, name: '', image: null, image_mode: 'auto'})
     const [lanes, setLanes] = useState({lanes: []})
     const [permissions, setPermissions] = useState({ can_edit_tasks: false, can_edit_lists: false, can_move_tasks: false, can_move_lists: false, is_admin: false})
     let { id } = useParams();
@@ -41,8 +40,7 @@ const BoardsShow = (props) => {
             if (response.ok) { return response.json();
             } else { window.location.href = "/"; }
         }).then(board => {
-            setBoard({ id: board.id, name: board.name })
-            setImageUrl(board.image)
+            setBoard({ id: board.id, name: board.name, image: board.image, image_mode: board.image_mode })
             setLanes({lanes: board.lanes})
             setWorkspace(board.workspace)
             setUsers(board.users)
@@ -79,16 +77,16 @@ const BoardsShow = (props) => {
     }, [])
 
     useEffect(() => {
-        $('.site').css('background-image', `url('${imageUrl}')`)
-        if (imageUrl) {
-            fac.getColorAsync(imageUrl).then(color => {
+        $('.site').css('background-image', `url('${board.image}')`).css('background-size', board.image_mode)
+        if (board.image) {
+            fac.getColorAsync(board.image).then(color => {
                 setToolbarColor(color.isDark ? '#fff': '#000')
             })
         }
-    }, [imageUrl])
+    }, [board])
 
     useEffect(() => {
-        return () => { $('.site').css('background-image', '')};
+        return () => { $('.site').css('background-image', '').css('background-size', '') };
     }, []);
 
     const components = {
@@ -122,7 +120,7 @@ const BoardsShow = (props) => {
 
                 />
             </div>
-            <BoardSidebar boardId={id} users={users} permissions={permissions} lanes={lanes} setLanes={setLanes} />
+            <BoardSidebar board={board} users={users} permissions={permissions} lanes={lanes} setLanes={setLanes} />
         </div>
     )
 }

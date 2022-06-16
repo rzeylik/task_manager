@@ -16,6 +16,7 @@ import UserCircle from "../../../users/UserCircle";
 const BoardCard = (props) => {
     const {
         assignments,
+        bg_color,
         showDeleteButton,
         style,
         tagStyle,
@@ -54,18 +55,20 @@ const BoardCard = (props) => {
                 data-id={id}
                 onClick={onClick}
                 style={style}
-                className={className}
+                className={`${className} p-0`}
             >
-                <Detail>
-                    {title}
-                </Detail>
-                {
-                    assignments.length !== 0 &&
-                    <Footer>
-                        { assignments.map((assignment) => <UserCircle key={assignment.id} size={30} user={assignment.user} className={'ms-1'} />) }
-                    </Footer>
-                }
-
+                { bg_color && (<div style={{backgroundColor: bg_color }} className="py-3 rounded-top"></div>) }
+                <div className="p-2">
+                    <Detail>
+                        {title}
+                    </Detail>
+                    {
+                        assignments.length !== 0 &&
+                        <Footer>
+                            { assignments.map((assignment) => <UserCircle key={assignment.id} size={30} user={assignment.user} className={'ms-1'} />) }
+                        </Footer>
+                    }
+                </div>
             </MovableCardWrapper>
             <CardModal editable={editable} onDelete={props.onDelete} open={modalOpen} onClose={handleModalClose} id={id} />
         </div>
