@@ -1,7 +1,7 @@
 class BoardBlueprint < Blueprinter::Base
   identifier :id
 
-  fields :name
+  fields :name, :image_mode
   field :user_id, name: :owner_id
 
   field :image do |board|

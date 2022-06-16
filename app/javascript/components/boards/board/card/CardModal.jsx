@@ -31,6 +31,7 @@ const CardModal = ({editable, ...props}) => {
             fullWidth={true}
             fullScreen={fullScreen}
         >
+            { data.bg_color && (<div style={{backgroundColor: data.bg_color }} className="py-5"></div>) }
             <div className={'p-sm-4 ps-sm-5 p-3 ps-4'}>
                 <div className="d-flex justify-content-between">
                     <div className="">

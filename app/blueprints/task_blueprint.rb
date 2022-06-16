@@ -1,5 +1,5 @@
 class TaskBlueprint < Blueprinter::Base
-  fields :description
+  fields :description, :bg_color
 
   field :card_id, name: :id
   field :name, name: :title

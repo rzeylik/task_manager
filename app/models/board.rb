@@ -9,6 +9,8 @@ class Board < ApplicationRecord
 
   mount_uploader :image, ImageUploader
 
+  enum image_mode: { auto: 0, cover: 1, contain: 2 }
+
   def all_users
     (workspace.users + users).uniq
   end

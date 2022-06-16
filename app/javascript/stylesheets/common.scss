@@ -30,6 +30,7 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  background-position: center;
 }
 
 ::-webkit-scrollbar {
@@ -60,6 +61,10 @@ body {
 
 .text-big {
   font-size: 16px;
+}
+
+.text-15 {
+  font-size: 15px;
 }
 
 .text-20 {
