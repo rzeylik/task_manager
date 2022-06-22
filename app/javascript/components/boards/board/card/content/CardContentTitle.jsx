@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 
 const CardContentTitle = ({children}) => {
     return (
-        <h5>
+        <h6>
             { children }
-        </h5>
+        </h6>
     )
 
 }

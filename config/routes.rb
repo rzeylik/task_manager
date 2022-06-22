@@ -40,6 +40,8 @@ Rails.application.routes.draw do
         post 'remove_file'
         get 'users'
         get 'users_to_assign'
+        post 'add_time'
+        post 'remove_time'
       end
       collection do
         post 'change_position'

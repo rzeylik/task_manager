@@ -6,6 +6,7 @@ import CardAssignments from "./CardAssignments";
 import CardAttachments from "./CardAttachments";
 import CardDueTo from "./CardDueTo";
 import CardRelatedCards from "./CardRelatedCards";
+import CardTrackTimes from "./CardTrackTimes";
 
 const CardContent = (props) => {
     const {
@@ -32,6 +33,12 @@ const CardContent = (props) => {
             { data?.related_cards?.length !== 0 &&
                 <div className={'mb-2'}>
                     <CardRelatedCards editable={editable} cardId={data.id} relatedCards={data.related_cards} />
+                </div>
+            }
+
+            { data?.track_times?.length !== 0 &&
+                <div className={'mb-2'}>
+                    <CardTrackTimes cardId={data.id} trackTimes={data.track_times} />
                 </div>
             }
 

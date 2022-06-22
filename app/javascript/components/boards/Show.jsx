@@ -30,7 +30,7 @@ const BoardsShow = (props) => {
     const [users, setUsers] = useState([])
     const [toolbarColor, setToolbarColor] = useState('#000')
     const [workspace, setWorkspace] = useState({ id: null, name: ''})
-    const [board, setBoard] = useState({ id: null, name: '', image: null, image_mode: 'auto'})
+    const [board, setBoard] = useState({ id: null, name: '', image: null, image_mode: 'auto', owner_id: null })
     const [lanes, setLanes] = useState({lanes: []})
     const [permissions, setPermissions] = useState({ can_edit_tasks: false, can_edit_lists: false, can_move_tasks: false, can_move_lists: false, is_admin: false})
     let { id } = useParams();
@@ -40,7 +40,7 @@ const BoardsShow = (props) => {
             if (response.ok) { return response.json();
             } else { window.location.href = "/"; }
         }).then(board => {
-            setBoard({ id: board.id, name: board.name, image: board.image, image_mode: board.image_mode })
+            setBoard({ id: board.id, name: board.name, image: board.image, image_mode: board.image_mode, owner_id: board.owner_id })
             setLanes({lanes: board.lanes})
             setWorkspace(board.workspace)
             setUsers(board.users)

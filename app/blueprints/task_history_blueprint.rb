@@ -9,6 +9,8 @@ class TaskHistoryBlueprint < Blueprinter::Base
     time_ago_in_words(task_history.created_at)
   end
 
-  fields :action
+  field :action do |history|
+    history.action.gsub('_name_', 'this card')
+  end
 
 end

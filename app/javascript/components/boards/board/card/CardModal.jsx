@@ -13,7 +13,7 @@ const CardModal = ({editable, ...props}) => {
 
     useEffect(() => {
         if(props.open === true) {
-            fetch(`/api/tasks/${props.id}`).then(response => response.json()).then(data => { setData(data);})
+            fetch(`/api/tasks/${props.id}`).then(response => response.json()).then(data => { setData(data); console.log(data) })
             const channel = window.pusher.subscribe(`task-channel-${props.id}`);
             channel.bind('task-update', (data) => {
                 setData(data);

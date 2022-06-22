@@ -1,5 +1,8 @@
 module Api
   class TasksController < ApplicationController
+    before_action :set_task_by_card_id, only: %i[add_time remove_time]
+    after_action :task_pusher, only: %i[add_time remove_time]
+
     def show
       task = Task.find_by_card_id params[:id]
 
@@ -177,6 +180,27 @@ module Api
                      TaskBlueprint.render_as_hash(task, view: :with_history))
     end
 
+    def add_time
+      authorize! :update, @task
+      return unless @task
+
+      track_time = TaskTrackTime.find_by(user: current_user, task: @task)
+      if track_time
+        track_time.duration = params[:time]
+      else
+        track_time = TaskTrackTime.new(user: current_user, task: @task, duration: params[:time])
+      end
+      track_time.save
+    end
+
+    def remove_time
+      authorize! :update, @task
+      return unless @task
+
+      track_time = TaskTrackTime.find_by(user: current_user, task: @task)
+      track_time.destroy
+    end
+
     def update
       task = Task.find_by_card_id params[:id]
       authorize! :update, task
@@ -206,25 +230,34 @@ module Api
 
     private
 
+    def set_task_by_card_id
+      @task = Task.find_by_card_id params[:id]
+    end
+
+    def task_pusher
+      Pusher.trigger("task-channel-#{@task.card_id}", 'task-update',
+                     TaskBlueprint.render_as_hash(@task, view: :with_history))
+    end
+
     def update_history(task)
-      TaskHistory.create(user: current_user, task: task, action: "set due to date to #{task.due_to.strftime('%d/%m/%Y %H:%M')}") if (task_params[:due_to])
-      TaskHistory.create(user: current_user, task: task, action: 'removed due to date') if (task_params[:due_to] === nil && task_params.key?(:due_to))
+      TaskHistory.create(user: current_user, task: task, action: "set due to date to #{task.due_to.strftime('%d/%m/%Y %H:%M')} of _name_") if (task_params[:due_to])
+      TaskHistory.create(user: current_user, task: task, action: 'removed due to date of _name_') if (task_params[:due_to] === nil && task_params.key?(:due_to))
     end
 
     def history_on_create(task)
-      TaskHistory.create(user: current_user, task: task, action: "added this card to #{task.list.name}")
+      TaskHistory.create(user: current_user, task: task, action: "added _name_ to #{task.list.name}")
     end
 
     def history_on_move(task)
-      TaskHistory.create(user: current_user, task: task, action: "moved this card to #{task.list.name}")
+      TaskHistory.create(user: current_user, task: task, action: "moved _name_ to #{task.list.name}")
     end
 
     def history_on_join(task_assignment)
-      TaskHistory.create(user: task_assignment.user, task: task_assignment.task, action: 'joined this card')
+      TaskHistory.create(user: task_assignment.user, task: task_assignment.task, action: 'joined _name_')
     end
 
     def history_on_leave(task_assignment)
-      TaskHistory.create(user: task_assignment.user, task: task_assignment.task, action: 'left this card')
+      TaskHistory.create(user: task_assignment.user, task: task_assignment.task, action: 'left _name_')
     end
 
     def task_params

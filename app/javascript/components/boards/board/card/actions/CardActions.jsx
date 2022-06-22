@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import PropTypes from 'prop-types'
 import CardActionsTitle from "./CardActionsTitle";
 import CardActionsDate from "./CardActionsDate";
@@ -8,6 +8,8 @@ import CardActionsMembers from "./CardActionsMembers";
 import CardActionsFiles from "./CardActionsFiles";
 import CardActionsRelatedCards from "./CardActionsRelatedCards";
 import CardActionsColor from "./CardActionsColor";
+import CardActionsTime from "./CardActionsTime";
+import cardActionsColor from "./CardActionsColor";
 
 const CardActions = (props) => {
     const {
@@ -21,6 +23,7 @@ const CardActions = (props) => {
             <CardActionsTitle>Add to card</CardActionsTitle>
             <CardActionsMembers editable={editable} cardId={data.id} />
             <CardActionsDate cardId={data.id} dueTo={data.due_to} />
+            <CardActionsTime cardId={data.id} time={data.track_times?.find(tt => tt.user.id === current_user.id)?.duration} />
             <CardActionsFiles cardId={data.id} />
             <CardActionsRelatedCards cardId={data.id} />
             <CardActionsColor cardId={data.id} color={data.bg_color} />

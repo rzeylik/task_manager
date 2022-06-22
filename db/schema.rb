@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_16_153616) do
+ActiveRecord::Schema.define(version: 2022_06_19_114509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -97,6 +97,16 @@ ActiveRecord::Schema.define(version: 2022_06_16_153616) do
     t.index ["parent_id"], name: "index_task_relations_on_parent_id"
   end
 
+  create_table "task_track_times", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "task_id", null: false
+    t.interval "duration"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["task_id"], name: "index_task_track_times_on_task_id"
+    t.index ["user_id"], name: "index_task_track_times_on_user_id"
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -156,6 +166,8 @@ ActiveRecord::Schema.define(version: 2022_06_16_153616) do
   add_foreign_key "task_histories", "users"
   add_foreign_key "task_relations", "tasks", column: "child_id"
   add_foreign_key "task_relations", "tasks", column: "parent_id"
+  add_foreign_key "task_track_times", "tasks"
+  add_foreign_key "task_track_times", "users"
   add_foreign_key "tasks", "lists"
   add_foreign_key "workspace_rights", "users"
   add_foreign_key "workspace_rights", "workspaces"

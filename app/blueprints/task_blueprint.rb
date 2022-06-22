@@ -15,6 +15,7 @@ class TaskBlueprint < Blueprinter::Base
   view :with_history do
     association :task_histories, name: :actions, blueprint: TaskHistoryBlueprint
     association :task_attachments, name: :attachments, blueprint: TaskAttachmentBlueprint
+    association :task_track_times, name: :track_times, blueprint: TaskTrackTimeBlueprint
     association :children, name: :related_cards, blueprint: TaskBlueprint
   end
 

@@ -7,4 +7,5 @@ class Task < ApplicationRecord
   has_many :task_attachments, dependent: :destroy
   has_many :task_relations, foreign_key: :parent_id, dependent: :destroy
   has_many :children, through: :task_relations, dependent: :destroy
+  has_many :task_track_times, dependent: :destroy
 end

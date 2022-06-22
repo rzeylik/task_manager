@@ -7,7 +7,7 @@ const BoardToolbar = ({workspace, board, users, permissions, color, ...props}) =
     return (
         <div className={`board-toolbar py-1 px-3 d-flex ${color === '#fff' ? 'board-toolbar-white' : 'board-toolbar-black'}`}>
             <div className="flex-grow-1 d-flex align-items-center">
-                <div className="">{workspace.name}</div>
+                { board.owner_id === current_user.id ? <Link className={'color-inherit'} to={`/workspaces/${workspace.id}/edit`}>{workspace.name}</Link> : (<div className="">{workspace.name}</div>) }
                 <div className="splitter mx-2">
                     <i className="fas fa-angle-right"></i>
                 </div>

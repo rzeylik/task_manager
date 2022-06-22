@@ -27,6 +27,15 @@ export const updateColor = (cardId, color) => {
     post(`/api/tasks/${cardId}`, data, defaultHeaders, 'PATCH')
 }
 
+export const updateTime = (cardId, time) => {
+    const data = { time: time }
+    post(`/api/tasks/${cardId}/add_time`, data)
+}
+
+export const removeTime = (cardId) => {
+    post(`/api/tasks/${cardId}/remove_time`)
+}
+
 export const joinToCard = (cardId) => {
     post(`/api/tasks/${cardId}/join`, {})
 }
