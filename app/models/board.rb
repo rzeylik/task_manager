@@ -6,6 +6,7 @@ class Board < ApplicationRecord
   has_many :users, through: :board_rights
   has_many :messages, class_name: 'BoardMessage'
   belongs_to :owner, foreign_key: :user_id, class_name: 'User'
+  has_many :task_histories
 
   mount_uploader :image, ImageUploader
 

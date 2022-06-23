@@ -97,8 +97,8 @@ const BoardsShow = (props) => {
     }
 
     return (
-        <div className={'d-flex p-relative'}>
-            <div className="d-flex flex-column flex-grow-1 overflow-x-auto">
+        <div className={'d-flex position-relative overflow-x-hidden'}>
+            <div className="board-container d-flex flex-column flex-grow-1 overflow-x-auto">
                 <BoardToolbar workspace={workspace} board={board} users={users} color={toolbarColor} permissions={permissions} />
                 <Board data={lanes}
                        eventBusHandle={setEventBus}

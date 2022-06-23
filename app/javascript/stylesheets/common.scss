@@ -101,6 +101,10 @@ body {
   overflow-y: auto;
 }
 
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+
 .outline-none {
   &.form-control:focus {
     border-color: #ced4da;
@@ -114,6 +118,10 @@ body {
 
 .text-right {
   text-align: right;
+}
+
+.text-underline {
+  text-decoration: underline;
 }
 
 .color-inherit {

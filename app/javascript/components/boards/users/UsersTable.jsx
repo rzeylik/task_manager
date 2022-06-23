@@ -1,9 +1,14 @@
 import React from 'react';
 import {updatePermission} from "./users_actions";
+import {removeUserFromBoard} from "../board_actions";
 
-const UsersTable = ({users}) => {
+const UsersTable = ({boardId, users}) => {
     const onSwitchChange = (id, permissionName, value) => {
         updatePermission(id, permissionName, value)
+    }
+
+    const removeUser = (id) => {
+        removeUserFromBoard(boardId, id).then(() => location.reload())
     }
 
     return (
@@ -17,6 +22,7 @@ const UsersTable = ({users}) => {
                         <th>Edit lanes</th>
                         <th>Drag cards</th>
                         <th>Drag lanes</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,6 +54,7 @@ const UsersTable = ({users}) => {
                                     <span className="slider round"></span>
                                 </label>
                             </td>
+                            <td></td>
                         </tr>
                     ))}
                     {users.board_users.map(right => (
@@ -77,6 +84,11 @@ const UsersTable = ({users}) => {
                                     <input type="checkbox" className="primary" onChange={(e) => {onSwitchChange(right.id, 'can_move_lists', e.currentTarget.checked)}} defaultChecked={right.can_move_lists} />
                                     <span className="slider round"></span>
                                 </label>
+                            </td>
+                            <td>
+                                <div className="text-danger">
+                                    <i onClick={() => {removeUser(right.user.id)}} className={'fa fa-trash cursor-pointer'}></i>
+                                </div>
                             </td>
                         </tr>
                     ))}

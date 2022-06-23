@@ -102,3 +102,8 @@ export const destroyBoard = (boardId) => {
 export const updateImageMode = (boardId, imageMode) => {
     return post(`/api/boards/${boardId}/update_image_mode`, { image_mode: imageMode })
 }
+
+export const getActivity = (boardId, last_activity_id = '') => {
+    return fetch(`/api/boards/${boardId}/activity?last_activity_id=${last_activity_id}`).then(res => res.json())
+}
+

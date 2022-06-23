@@ -23,6 +23,7 @@ Rails.application.routes.draw do
         post 'add_user'
         post 'remove_user'
         get 'permissions'
+        get 'activity'
       end
     end
     resources :lists do

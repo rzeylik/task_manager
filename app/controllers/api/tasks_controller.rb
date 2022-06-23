@@ -164,6 +164,8 @@ module Api
 
       attachment = TaskAttachment.new(task: task, attachment: params[:file])
       attachment.save
+
+      TaskHistory.create_with_task(task: task, user: current_user, action: "added file #{attachment.attachment&.file&.filename} to _name_")
       Pusher.trigger("task-channel-#{task.card_id}", 'task-update',
                      TaskBlueprint.render_as_hash(task, view: :with_history))
     end
@@ -176,6 +178,8 @@ module Api
 
       attachment = TaskAttachment.find params[:attachment_id]
       attachment.destroy
+
+      TaskHistory.create_with_task(task: task, user: current_user, action: "removed file #{attachment.attachment&.file&.filename} from _name_")
       Pusher.trigger("task-channel-#{task.card_id}", 'task-update',
                      TaskBlueprint.render_as_hash(task, view: :with_history))
     end
@@ -223,6 +227,7 @@ module Api
       tasks = from_list.tasks.where('position > ?', task.position)
       tasks.update_all('position = (position - 1)')
       task.destroy
+      history_on_destroy(task)
       Pusher.trigger("board-channel-#{params[:board_id]}", 'delete-card-event',
                      { lane_id: from_list.lane_id, card_id: params[:card_id] },
                      { socket_id: params[:socket_id] })
@@ -240,24 +245,28 @@ module Api
     end
 
     def update_history(task)
-      TaskHistory.create(user: current_user, task: task, action: "set due to date to #{task.due_to.strftime('%d/%m/%Y %H:%M')} of _name_") if (task_params[:due_to])
-      TaskHistory.create(user: current_user, task: task, action: 'removed due to date of _name_') if (task_params[:due_to] === nil && task_params.key?(:due_to))
+      TaskHistory.create_with_task(task: task, action: "set due to date to #{task.due_to.strftime('%d/%m/%Y %H:%M')} of _name_", user: current_user) if (task_params[:due_to])
+      TaskHistory.create_with_task(task: task, user: current_user, action: 'removed due to date of _name_') if (task_params[:due_to] === nil && task_params.key?(:due_to))
     end
 
     def history_on_create(task)
-      TaskHistory.create(user: current_user, task: task, action: "added _name_ to #{task.list.name}")
+      TaskHistory.create_with_task(task: task, user: current_user, action: "added _name_ to #{task.list.name}")
     end
 
     def history_on_move(task)
-      TaskHistory.create(user: current_user, task: task, action: "moved _name_ to #{task.list.name}")
+      TaskHistory.create_with_task(task: task,user: current_user, action: "moved _name_ to #{task.list.name}")
     end
 
     def history_on_join(task_assignment)
-      TaskHistory.create(user: task_assignment.user, task: task_assignment.task, action: 'joined _name_')
+      TaskHistory.create_with_task(task: task_assignment.task, user: task_assignment.user, action: 'joined _name_')
     end
 
     def history_on_leave(task_assignment)
-      TaskHistory.create(user: task_assignment.user, task: task_assignment.task, action: 'left _name_')
+      TaskHistory.create_with_task(task: task_assignment.task, user: task_assignment.user, action: 'left _name_')
+    end
+
+    def history_on_destroy(task)
+      TaskHistory.create_with_task(task: task, user: current_user, action: 'deleted _name_')
     end
 
     def task_params

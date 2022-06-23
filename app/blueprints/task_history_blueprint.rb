@@ -3,6 +3,8 @@ class TaskHistoryBlueprint < Blueprinter::Base
 
   identifier :id
 
+  fields :board_id
+
   association :user, blueprint: UserBlueprint
 
   field :time_ago do |task_history|
@@ -13,4 +15,12 @@ class TaskHistoryBlueprint < Blueprinter::Base
     history.action.gsub('_name_', 'this card')
   end
 
+  view :activity do
+    field :action do |history|
+      history.action.gsub('_name_', history.name)
+    end
+    field :created_at do |history|
+      history.created_at.strftime("%b %d %H:%M")
+    end
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_19_114509) do
+ActiveRecord::Schema.define(version: 2022_06_22_195915) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,10 @@ ActiveRecord::Schema.define(version: 2022_06_19_114509) do
     t.string "action"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "users_to_notify", default: [], array: true
+    t.text "name"
+    t.bigint "board_id"
+    t.index ["board_id"], name: "index_task_histories_on_board_id"
     t.index ["task_id"], name: "index_task_histories_on_task_id"
     t.index ["user_id"], name: "index_task_histories_on_user_id"
   end

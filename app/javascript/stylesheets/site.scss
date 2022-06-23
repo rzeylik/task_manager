@@ -88,22 +88,35 @@
   border-radius: 50%;
 }
 
+.board-container {
+  padding-right: 50px;
+}
+
 .board-sidebar {
   padding: 12px;
-  max-width: 350px;
-  width: 100%;
-  background: rgba(#f0f9fd, 0.85);
+  width: 350px;
+  background: rgba(#f0f9fd, 1);
   transition: 0.5s ease;
   overflow-y: auto;
   height: calc(100vh - #{$footer-height} - #{$header-height}) !important;
+  position: absolute;
+  right: 0;
+  transform: translateX(300px);
+
+  &-content {
+    transition: 0.5s ease;
+  }
 
   &.open {
-    width: 350px;
-    //min-width: 350px;
+    transform: translateX(0);
   }
 
   &.closed {
-    width: 50px;
+    transform: translateX(300px);
+
+    .board-sidebar-content {
+      padding-left: 50px;
+    }
   }
 }
 
@@ -228,5 +241,13 @@
         background-color: rgba(#000, 0.5);
       }
     }
+  }
+}
+
+.activity-item {
+  font-size: 13px;
+
+  &-time {
+    margin-top: -5px;
   }
 }

@@ -5,10 +5,8 @@ import {Link} from "react-router-dom";
 
 const Footer = (props) => {
     return (
-        <footer className={'footer w-100 text-white py-2'}>
-            <div className="container mx-auto">
-                © 2021 Softer
-            </div>
+        <footer className={'footer w-100 text-white py-2 px-2'}>
+            © 2022 Softer
         </footer>
     )
 }
