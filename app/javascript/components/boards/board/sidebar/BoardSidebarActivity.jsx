@@ -9,7 +9,6 @@ const BoardSidebarActivity = ({ className, boardId }) => {
     useEffect(() => {
         const channel = pusher.subscribe(`activity-channel-${boardId}`);
         channel.bind('add-activity', activity => {
-            console.log(activity)
             setActivities([activity, ...activities])
         });
 

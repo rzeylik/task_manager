@@ -43,15 +43,6 @@ const BoardSidebarBackground = (props) => {
         <div className={className}>
             <h6 className="text-muted">Background</h6>
             <form onSubmit={onSubmit} method={'post'}>
-                {/*<Upload*/}
-                {/*    onChange={(info)  => console.log(info)}*/}
-                {/*    defaultFileList={[{ uid: '1', name: imageName, status: 'done', url: image}]}*/}
-                {/*    maxCount={1}*/}
-                {/*    beforeUpload={() => false}*/}
-                {/*    accept={'.png, .jpg, .gif'}*/}
-                {/*>*/}
-                {/*    <div className="btn btn-primary">Upload</div>*/}
-                {/*</Upload>*/}
                 <div className="d-flex mb-1">
                     <input defaultValue={image} required={true} className={'form-control form-control-sm me-2'} name={'image'} type="file" id={'boardImage'} accept="image/png, image/gif, image/jpeg" />
                     <button className={'btn btn-sm btn-primary'}>Update</button>

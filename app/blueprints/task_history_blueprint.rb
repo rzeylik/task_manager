@@ -20,7 +20,7 @@ class TaskHistoryBlueprint < Blueprinter::Base
       history.action.gsub('_name_', history.name)
     end
     field :created_at do |history|
-      history.created_at.strftime("%b %d %H:%M")
+      history.created_at.in_time_zone('Kyiv').strftime("%b %d %H:%M")
     end
   end
 end
